@@ -10,7 +10,7 @@
             <a href="reg.jsp" class="register">REGISTRATION</a>
             <span> / </span>
             <br>
-            <a href="login.jsp" class="sign_in">LOG IN</a>
+            <a href="login" class="sign_in">LOG IN</a>
 
     </c:if>
     <c:if test="${auth==true}">
