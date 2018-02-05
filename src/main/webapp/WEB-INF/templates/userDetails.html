@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <title>Профиль пользователя</title>
+</head>
+<body>
+Привет, <span th:text="${session.user.name} +' '+ ${session.user.surname}"> Имя и фамилия</span>
+<br>
+Ты из  из города <span th:text="${session.user.address.countryName} +' '+ ${session.user.address.city}"> Страна и город</span>
+<br>
+Твой адресс <span th:text="${session.user.address.address}"> Адресс </span>
+<br>
+Почтовый индекс <span th:text=${session.user.address.postcode}> Почтовый индекс </span>
+<br>
+<ul>
+    <li><a href="update"> Изменить личные данные</a></li>
+    <li><a href="registerParcel.jsp"> Зарегистировать посылку</a></li>
+    <li><a href="send">Отправить посылку</a></li>
+    <li><a href="logout">Разлогиниться</a></li>
+    <li><a href="parcelStats">Статистика отправлений</a></li>
+</ul>
+
+</body>
+</html>

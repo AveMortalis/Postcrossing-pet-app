@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="reg" style="background-color:green;width: 400px;height:auto;margin-left:auto;margin-right:auto">
-    <form action="login" method="POST">
+    <form action="login" method="POST" >
         <div >
             <label for="log1" style="display: inline-block;width: 150px;text-align:right;">Login</label>
             <input type="text" name="login" id="log1" style="margin-left:auto;margin-right:auto;">

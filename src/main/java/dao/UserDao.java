@@ -6,44 +6,57 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import service.HibernateUtil;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Repository
 public class UserDao {
 
-    private Session session;
-    public UserDao(Session session) {
-        this.session = session;
+    private SessionFactory sessionFactory;
+
+    @Autowired
+    public UserDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     public List<User> getAll(){
+        Session session=sessionFactory.getCurrentSession();
         Query query=session.createQuery("FROM entity.User");
         return query.list();
     }
 
     public User getUserById(int id){
+        Session session=sessionFactory.getCurrentSession();
         return session.get(User.class,id);
     }
 
     public void deleteUser(User user){
+        Session session=sessionFactory.getCurrentSession();
         session.delete(user);
     }
 
     public void addUser(User user){
+        Session session=sessionFactory.getCurrentSession();
         session.save(user);
     }
     
     public void updateUser(User user){
-        User userForUpdate= session.get(User.class,user.getId());
-        userForUpdate.setName(user.getName());
-        userForUpdate.setSurname(user.getSurname());
-        userForUpdate.setEmail(user.getEmail());
-        session.save(userForUpdate);
+        Session session=sessionFactory.getCurrentSession();
+//        User userForUpdate= session.get(User.class,user.getId());
+//        userForUpdate.setName(user.getName());
+//        userForUpdate.setSurname(user.getSurname());
+//        userForUpdate.setEmail(user.getEmail());
+        session.update(user);
     }
 
     public User login(String login,String pass){
-        Query query=session.createQuery("FROM entity.User where login=:login and password=:pass",User.class).setParameter("login",login).setParameter("pass",pass);
+        Session session=sessionFactory.getCurrentSession();
+        Query query=session.createQuery("FROM entity.User where login=:login and password=:pass",User.class)
+                .setParameter("login",login)
+                .setParameter("pass",pass);
         if(query.list().isEmpty()!=true){
             User user=(User) query.list().get(0);
             return user;

@@ -1,7 +1,10 @@
+import config.MvcViewConfig;
 import config.RootConfig;
-import config.WebConfig;
 import org.springframework.lang.Nullable;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.servlet.Filter;
 
 public class PostcrossingInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
@@ -12,10 +15,21 @@ public class PostcrossingInitializer extends AbstractAnnotationConfigDispatcherS
 
     @Nullable
     protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[]{WebConfig.class};
+        return new Class<?>[]{MvcViewConfig.class};
     }
 
     protected String[] getServletMappings() {
         return new String[] {"/"};
     }
+
+    @Override
+    protected Filter[] getServletFilters() {
+
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+
+        return new Filter[] { characterEncodingFilter};
+    }
+
 }

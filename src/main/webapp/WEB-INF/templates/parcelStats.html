@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <meta charset="UTF-8">
+    <title>Статистика отправлений</title>
+    <link rel="stylesheet" type="text/css" th:href="@{css/stats.css}"/>
+</head>
+<body>
+<table>
+    <tr>
+        <th>№</th>
+        <th>От</th>
+        <th>Кому</th>
+        <th>Статус</th>
+    </tr>
+    <tr th:each="parcel : ${parcels}">
+            <td th:text="${parcel.id}">1</td>
+            <td th:text="${parcel.mailer.name}+' '+${parcel.mailer.surname}">Mailer</td>
+            <td th:text="${parcel.recipient.name}+' '+${parcel.recipient.surname}">Recipient</td>
+            <td th:text="${parcel.status}">Status</td>
+    </tr>
+
+</table>
+
+
+<a href="/home" th:href="@{/}">На главную</a>
+</body>
+</html>

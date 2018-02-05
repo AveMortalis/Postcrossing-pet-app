@@ -10,10 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-@Configuration
-@EnableWebMvc
-@ComponentScan("controller")
-public class WebConfig implements WebMvcConfigurer {
+//@Configuration
+//@EnableWebMvc
+//@ComponentScan("controller")
+//public class WebConfig implements WebMvcConfigurer {
 //    @Bean
 //    public ViewResolver viewResolver(){
 //        InternalResourceViewResolver resolver=new InternalResourceViewResolver();
@@ -22,4 +22,4 @@ public class WebConfig implements WebMvcConfigurer {
 //        resolver.setExposeContextBeansAsAttributes(true);
 //        return resolver;
 //    }
-}
+//}

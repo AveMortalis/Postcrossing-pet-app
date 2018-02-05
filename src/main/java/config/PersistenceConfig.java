@@ -17,7 +17,7 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:db/database.property")
-@ComponentScan
+@ComponentScan({"entity","controller","dao","service"})
 @EnableTransactionManagement
 public class PersistenceConfig {
 

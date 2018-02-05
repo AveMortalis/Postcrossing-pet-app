@@ -11,7 +11,7 @@
 <html>
 <head>
     <title>Статистика</title>
-    <link rel="stylesheet" type="text/css" href="stats.css">
+    <link rel="stylesheet" type="text/css" href="../../../resources/stats.css">
 </head>
 <body>
 <table>

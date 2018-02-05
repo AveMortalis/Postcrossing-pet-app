@@ -21,16 +21,16 @@ public class main {
     private SessionFactory sessionFactory;
 
     public static void main(String[] args) {
-//        Session session= HibernateUtil.getSessionFactory().openSession();
-//        Transaction tx=session.beginTransaction();
-
-        ApplicationContext context =
-                new AnnotationConfigApplicationContext(PersistenceConfig.class);
-        SessionFactory sessionFactory= (SessionFactory) context.getBean("sessionFactory");
-        Session session=sessionFactory.openSession();
-        UserDao userDao=new UserDao(session);
-        User mailer =userDao.getUserById(2);
-        System.out.println("MAILER: "+mailer);
+////        Session session= HibernateUtil.getSessionFactory().openSession();
+////        Transaction tx=session.beginTransaction();
+//
+//        ApplicationContext context =
+//                new AnnotationConfigApplicationContext(PersistenceConfig.class);
+//        SessionFactory sessionFactory= (SessionFactory) context.getBean("sessionFactory");
+//
+//        UserDao userDao=new UserDao(session);
+//        User mailer =userDao.getUserById(2);
+//        System.out.println("MAILER: "+mailer);
 
 
 //        AwaitListDao awaitListDao=new AwaitListDao(session);
