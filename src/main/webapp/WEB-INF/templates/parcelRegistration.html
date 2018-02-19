@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <title>Регистрация посылки</title>
+    <link th:replace="fragments/header :: styleForHeader"/>
+</head>
+<body>
+<div th:replace=" fragments/header :: header"></div>
+<div class="reg" style="background-color:green;width: 400px;height:auto;margin-left:auto;margin-right:auto">
+    <span>Введите в поле регистрационный код, указанный на полученной вами посылке</span>
+    <form th:action="parcelRegistration" method="POST">
+        <div >
+            <label for="regcode" style="display: inline-block;width: 150px;text-align:right;">Регистрационный код</label>
+            <input type="text" name="regcode" id="regcode" style="margin-left:auto;margin-right:auto;">
+        </div>
+
+        <div style="padding-top:10px;margin-right:auto;margin-left:auto; width:110px">
+            <input  type="submit" name="Reg" value="Reg" >
+        </div>
+    </form>
+</div>
+</body>
+</html>

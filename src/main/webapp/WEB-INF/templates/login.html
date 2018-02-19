@@ -2,9 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-    <title>Title</title>
+    <title>Login page</title>
+    <link th:replace="fragments/header :: styleForHeader"/>
 </head>
 <body>
+<div th:replace=" fragments/header :: header"></div>
 <div class="reg" style="background-color:green;width: 400px;height:auto;margin-left:auto;margin-right:auto">
     <form th:action="login" method="POST" th:object="${user}">
         <div >

@@ -1,6 +1,8 @@
 package service;
 
+import dao.AwaitListDao;
 import dao.UserDao;
+import entity.AwaitList;
 import entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,9 +13,12 @@ public class UserService {
 
     private UserDao userDao;
 
+    private AwaitListDao awaitListDao;
+
     @Autowired
-    public UserService(UserDao userDao) {
+    public UserService(UserDao userDao, AwaitListDao awaitListDao) {
         this.userDao = userDao;
+        this.awaitListDao = awaitListDao;
     }
 
     @Transactional
@@ -31,4 +36,5 @@ public class UserService {
     public void saveUser(User user){
         userDao.addUser(user);
     }
+
 }

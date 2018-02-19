@@ -4,9 +4,12 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <meta charset="UTF-8">
     <title>Статистика отправлений</title>
+    <link th:replace="fragments/header :: styleForHeader"/>
     <link rel="stylesheet" type="text/css" th:href="@{css/stats.css}"/>
 </head>
 <body>
+<div th:replace=" fragments/header :: header"></div>
+Все посылки:
 <table>
     <tr>
         <th>№</th>
@@ -23,6 +26,41 @@
 
 </table>
 
+<br>
+Отправленные вами:
+<table>
+    <tr>
+        <th>№</th>
+        <th>От</th>
+        <th>Кому</th>
+        <th>Статус</th>
+    </tr>
+    <tr th:each="sended : ${userSendedParcels}">
+        <td th:text="${sended.id}">1</td>
+        <td th:text="${sended.mailer.name}+' '+${sended.mailer.surname}">Mailer</td>
+        <td th:text="${sended.recipient.name}+' '+${sended.recipient.surname}">Recipient</td>
+        <td th:text="${sended.status}">Status</td>
+    </tr>
+
+</table>
+
+<br>
+Принятые вами:
+<table>
+    <tr>
+        <th>№</th>
+        <th>От</th>
+        <th>Кому</th>
+        <th>Статус</th>
+    </tr>
+    <tr th:each="recived : ${userRecivedParcels}">
+        <td th:text="${recived.id}">1</td>
+        <td th:text="${recived.mailer.name}+' '+${recived.mailer.surname}">Mailer</td>
+        <td th:text="${recived.recipient.name}+' '+${recived.recipient.surname}">Recipient</td>
+        <td th:text="${recived.status}">Status</td>
+    </tr>
+
+</table>
 
 <a href="/home" th:href="@{/}">На главную</a>
 </body>

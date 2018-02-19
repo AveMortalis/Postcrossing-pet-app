@@ -3,12 +3,14 @@
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <title>Welcome to postcrossing application</title>
+    <link th:replace="fragments/header :: styleForHeader"/>
+    <!--<link rel="stylesheet" type="text/css" th:href="@{css/nav.css}"/>-->
 </head>
 <body>
-    <a href="registration" class="registration">REGISTRATION</a>
-    <br>
-    <a href="login" class="sign_in">LOG IN</a>
-    <br>
-    <a href="parcelStats" class="stats" >Статистика</a>
+	<nav th:replace=" fragments/header :: header">
+		<a class="button login" href="login" >LOGIN</a>
+	    <a class="button" href="registration" >Регистрация</a>
+	    <a class="button" href="parcelStats"  >Статистика</a>
+    </nav>
 </body>
 </html>

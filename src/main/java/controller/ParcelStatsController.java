@@ -2,6 +2,7 @@ package controller;
 
 import dao.ParcelDao;
 import entity.Parcel;
+import entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -19,6 +20,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -34,8 +36,11 @@ public class ParcelStatsController {
     }
 
     @RequestMapping(value = "parcelStats", method = RequestMethod.GET)
-    public String getParcelStats(Model model){
+    public String getParcelStats(Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
         model.addAttribute("parcels",parcelService.getAll());
+        model.addAttribute("userSendedParcels",parcelService.getAllSendedByUser(user));
+        model.addAttribute("userRecivedParcels",parcelService.getAllRecivedByUser(user));
         return "parcelStats";
     }
 }

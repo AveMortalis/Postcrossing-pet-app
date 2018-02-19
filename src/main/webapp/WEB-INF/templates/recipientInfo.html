@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <title>Данные получателя</title>
+    <link th:replace="fragments/header :: styleForHeader"/>
+</head>
+<body>
+<div th:replace=" fragments/header :: header"></div>
+Отправь октрытку <span th:text="${recipient.name} +' '+ ${recipient.surname}"></span>
+<br>
+<span> Он(а) проживает в <span th:text="${recipient.address.countryName}"></span>  в городе <span th:text="${recipient.address.city}"></span> </span>
+<br>
+По адрессу <span th:text="${recipient.address.address}"></span>
+<br>
+Почтовый индекс[<span th:text="${recipient.address.postcode}"></span>]
+<br>
+<span> И не забудь указать -> [ <span th:text="${regcode}"></span>] <- этот код на открытке  </span>
+<br>
+
+<a href="/home" th:href="@{/}">На главную</a>
+</body>
+</html>

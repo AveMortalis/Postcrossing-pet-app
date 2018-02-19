@@ -30,9 +30,9 @@ public class AwaitListDao {
         return query.list();
     }
     
-    public AwaitList getFirst(User user){
+    public AwaitList getFirstRecordFromAwaitList(User user){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM entity.AwaitList where user_id!=:userId",AwaitList.class).setParameter("userId",user.getId());
+        Query query = session.createQuery("FROM entity.AwaitList where user_id_fk!=:userId",AwaitList.class).setParameter("userId",user.getId());
         if(query.list().isEmpty()==false){
             AwaitList awaitList=(AwaitList) query.list().get(0);
             return awaitList;
@@ -50,10 +50,12 @@ public class AwaitListDao {
         Session session = sessionFactory.getCurrentSession();
         session.save(awaitList);
     }
-    public void add(User user){
+
+
+    public void addUserToAwaitList(User user){
         Session session = sessionFactory.getCurrentSession();
         AwaitList awaitList=new AwaitList();
-        awaitList.setUser_id(user.getId());
+        awaitList.setUser(user);
         session.save(awaitList);
     }
 }

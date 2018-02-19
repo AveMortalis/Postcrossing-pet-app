@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <title>Welcome to postcrossing application</title>
+    <link rel="stylesheet" type="text/css" href="header.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+</head>
+<body>
+
+<div class="wrpr" th:fragment="header">
+	<div class="logo">
+		POSTCROSSING
+	</div>
+	<ul class="account-menu">
+		<li class="acc-item login">
+			<a class="button" href="login" >LOGIN</a>
+		</li>
+		<li class="acc-item">
+			<a class="button" href="registration" >Регистрация</a>
+		</li>
+	</ul>
+	<nav>
+			<ul class="navbar">
+				<li class="nav-item nav-first">
+					<a class="button" href="home" >НА ГЛАВНУЮ</a>
+				</li>			
+			    <li class="nav-item">
+			    	<a class="button" href="info" >ПОЛЕЗНАЯ ИНФОРМАЦИЯ</a>
+			    </li>
+			    <li class="nav-item nav-last">
+			    	<a class="button" href="parcelStats"  >СТАТИСТИКА</a>
+			    </li>
+			</ul>
+	</nav>
+</div>
+</body>
+</html>

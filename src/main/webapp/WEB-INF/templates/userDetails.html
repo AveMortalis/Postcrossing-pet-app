@@ -3,8 +3,10 @@
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <title>Профиль пользователя</title>
+    <link th:replace="fragments/header :: styleForHeader"/>
 </head>
 <body>
+<div th:replace=" fragments/header :: header"></div>
 Привет, <span th:text="${session.user.name} +' '+ ${session.user.surname}"> Имя и фамилия</span>
 <br>
 Ты из  из города <span th:text="${session.user.address.countryName} +' '+ ${session.user.address.city}"> Страна и город</span>
@@ -15,8 +17,8 @@
 <br>
 <ul>
     <li><a href="update"> Изменить личные данные</a></li>
-    <li><a href="registerParcel.jsp"> Зарегистировать посылку</a></li>
-    <li><a href="send">Отправить посылку</a></li>
+    <li><a href="parcelRegistration"> Зарегистировать посылку</a></li>
+    <li><a href="getRecipentInfo">Отправить посылку</a></li>
     <li><a href="logout">Разлогиниться</a></li>
     <li><a href="parcelStats">Статистика отправлений</a></li>
 </ul>

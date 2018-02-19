@@ -49,13 +49,30 @@ public class ParcelDao {
         parcelForUpdate.setDetails(parcel.getDetails());
     }
 
-    public List<Parcel> getParcelByRecipientAndRegcode(User recipient,String regcode){
+    public Parcel getParcelByRecipientAndRegcode(User recipient,String regcode){
         Session session=sessionFactory.getCurrentSession();
         List<Parcel> parcelList=session.createQuery("from entity.Parcel where recipient=:recipient and status=:status and registrationCode=:regcode",Parcel.class)
                 .setParameter("recipient",recipient)
                 .setParameter("status","Sended")
                 .setParameter("regcode",regcode)
                 .list();
-        return parcelList;
+        return parcelList.isEmpty()?null:parcelList.get(0);
     }
+
+    public List<Parcel> getAllSendedUserParcels(User user){
+        Session session=sessionFactory.getCurrentSession();
+        List<Parcel> parcelList=session.createQuery("from entity.Parcel where mailer=:mailer",Parcel.class)
+                .setParameter("mailer",user)
+                .list();
+        return parcelList.isEmpty()?null:parcelList;
+    }
+
+    public List<Parcel> getAllRecivedUserParcels(User user){
+        Session session=sessionFactory.getCurrentSession();
+        List<Parcel> parcelList=session.createQuery("from entity.Parcel where recipient=:recipient",Parcel.class)
+                .setParameter("recipient",user)
+                .list();
+        return parcelList.isEmpty()?null:parcelList;
+    }
+
 }

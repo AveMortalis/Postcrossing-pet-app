@@ -61,6 +61,6 @@ public class MvcViewConfig implements WebMvcConfigurer,ApplicationContextAware {
     }
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/css/**").addResourceLocations("classpath:static/");
+        registry.addResourceHandler("/css/**").addResourceLocations("classpath:static/css/");
     }
 }

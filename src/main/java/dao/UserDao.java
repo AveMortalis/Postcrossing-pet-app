@@ -45,10 +45,6 @@ public class UserDao {
     
     public void updateUser(User user){
         Session session=sessionFactory.getCurrentSession();
-//        User userForUpdate= session.get(User.class,user.getId());
-//        userForUpdate.setName(user.getName());
-//        userForUpdate.setSurname(user.getSurname());
-//        userForUpdate.setEmail(user.getEmail());
         session.update(user);
     }
 

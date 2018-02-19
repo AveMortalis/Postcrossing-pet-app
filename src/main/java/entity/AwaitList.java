@@ -2,6 +2,7 @@ package entity;
 
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,8 +16,9 @@ public class AwaitList implements Serializable {
     @Column(name="id",insertable = false)
     private int id;
 
-    @Column(name = "user_id_fk")
-    private int user_id;
+    @OneToOne
+    @JoinColumn(name = "user_id_fk")
+    private User user;
 
     public int getId() {
         return id;
@@ -26,12 +28,12 @@ public class AwaitList implements Serializable {
         this.id = id;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public User getUser() {
+        return user;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -42,21 +44,13 @@ public class AwaitList implements Serializable {
         AwaitList awaitList = (AwaitList) o;
 
         if (id != awaitList.id) return false;
-        return user_id == awaitList.user_id;
+        return user != null ? user.equals(awaitList.user) : awaitList.user == null;
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + user_id;
+        result = 31 * result + (user != null ? user.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "AwaitList{" +
-                "id=" + id +
-                ", user_id=" + user_id +
-                '}';
     }
 }
