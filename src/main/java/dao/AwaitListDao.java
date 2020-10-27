@@ -1,21 +1,17 @@
 package dao;
 
 import entity.AwaitList;
-import entity.Parcel;
 import entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import service.HibernateUtil;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public class AwaitListDao {
+public class AwaitListDao implements IWaiters{
 
     private SessionFactory sessionFactory;
 
@@ -32,7 +28,7 @@ public class AwaitListDao {
     
     public AwaitList getFirstRecordFromAwaitList(User user){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM entity.AwaitList where user_id_fk!=:userId",AwaitList.class).setParameter("userId",user.getId());
+        Query query = session.createQuery("FROM entity.AwaitList where user_id_fk!=:userId and id=(select MIN(id) from entity.AwaitList where user_id_fk!=:userId)",AwaitList.class).setParameter("userId",user.getId());
         if(query.list().isEmpty()==false){
             AwaitList awaitList=(AwaitList) query.list().get(0);
             return awaitList;

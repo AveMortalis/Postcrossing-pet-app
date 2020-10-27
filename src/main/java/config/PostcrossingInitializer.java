@@ -1,5 +1,8 @@
+package config;
+
 import config.MvcViewConfig;
 import config.RootConfig;
+import config.SecurityConfig;
 import org.springframework.lang.Nullable;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -28,7 +31,6 @@ public class PostcrossingInitializer extends AbstractAnnotationConfigDispatcherS
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
-
         return new Filter[] { characterEncodingFilter};
     }
 

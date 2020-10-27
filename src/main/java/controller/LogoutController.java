@@ -2,6 +2,7 @@ package controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +15,7 @@ import java.io.IOException;
 @Controller
 public class LogoutController {
 
-    @RequestMapping("logout")
+    @RequestMapping(value = "logout")
     public String logout(HttpSession session){
         session.invalidate();
         return "redirect:/";

@@ -1,6 +1,7 @@
 package config;
 
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+
+import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,7 +18,7 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:db/database.property")
-@ComponentScan({"entity","controller","dao","service"})
+@ComponentScan({"entity","dao","service"})
 @EnableTransactionManagement
 public class PersistenceConfig {
 
@@ -31,6 +32,7 @@ public class PersistenceConfig {
         basicDataSource.setUrl(env.getProperty("jdbc.url"));
         basicDataSource.setUsername(env.getProperty("jdbc.username"));
         basicDataSource.setPassword(env.getProperty("jdbc.password"));
+
         return basicDataSource;
     }
 
@@ -39,7 +41,7 @@ public class PersistenceConfig {
         LocalSessionFactoryBean sessionFactory=new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("entity");
-        sessionFactory.setHibernateProperties(hibernateProperties());
+        //sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
 

@@ -3,7 +3,6 @@ package entity;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.Table;
-import sun.security.util.Password;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -35,6 +34,9 @@ public class User implements Serializable{
     @OneToOne( cascade = CascadeType.ALL )
     @JoinColumn(name = "address_id")
     private Address address;
+
+    @Column(name="details")
+    private String details;
 
     public int getId() {
         return id;
@@ -92,6 +94,14 @@ public class User implements Serializable{
         this.address = address;
     }
 
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -105,7 +115,8 @@ public class User implements Serializable{
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
-        return address != null ? address.equals(user.address) : user.address == null;
+        if (address != null ? !address.equals(user.address) : user.address != null) return false;
+        return details != null ? details.equals(user.details) : user.details == null;
     }
 
     @Override
@@ -117,19 +128,7 @@ public class User implements Serializable{
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (details != null ? details.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", address=" + address +
-                '}';
     }
 }

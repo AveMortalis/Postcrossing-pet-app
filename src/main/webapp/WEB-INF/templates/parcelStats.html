@@ -1,67 +1,66 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" th:replace="fragments/layout::layout(~{::content},~{::title},~{::link})"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <meta charset="UTF-8">
-    <title>Статистика отправлений</title>
-    <link th:replace="fragments/header :: styleForHeader"/>
-    <link rel="stylesheet" type="text/css" th:href="@{css/stats.css}"/>
+    <title>User details</title>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/content.css}"/>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/stats.css}"/>
 </head>
 <body>
-<div th:replace=" fragments/header :: header"></div>
-Все посылки:
-<table>
-    <tr>
-        <th>№</th>
-        <th>От</th>
-        <th>Кому</th>
-        <th>Статус</th>
-    </tr>
-    <tr th:each="parcel : ${parcels}">
-            <td th:text="${parcel.id}">1</td>
-            <td th:text="${parcel.mailer.name}+' '+${parcel.mailer.surname}">Mailer</td>
-            <td th:text="${parcel.recipient.name}+' '+${parcel.recipient.surname}">Recipient</td>
+<div th:fragment="content" class="content">
+    <span sec:authorize="hasRole('USER')" class="smalltitle">Отправленные вами:</span>
+    <table sec:authorize="hasRole('USER')">
+        <tr>
+            <th>Дата</th>
+            <th>Кому</th>
+            <th>Куда</th>
+            <th>Статус</th>
+        </tr>
+        <tr th:each="sended : ${userSendedParcels}">
+            <td th:text="${sended.sendDate}">1</td>
+            <td th:text="${sended.recipient.name}+' '+${sended.recipient.surname}">Recipient</td>
+            <td th:text="${sended.recipient.address.country.countryName}">Country</td>
+            <td th:text="${sended.status}">Status</td>
+        </tr>
+
+    </table>
+    <a sec:authorize="hasRole('USER')" class="right" href="">Показать все</a>
+
+    <br>
+    <span sec:authorize="hasRole('USER')" class="smalltitle">Принятые вами:</span>
+    <table sec:authorize="hasRole('USER')">
+        <tr>
+            <th>Дата</th>
+            <th>От кого</th>
+            <th>Откуда</th>
+            <th>Статус</th>
+        </tr>
+        <tr  th:each="recived : ${userRecivedParcels}">
+            <td th:text="${recived.sendDate}">1</td>
+            <td th:text="${recived.mailer.name}+' '+${recived.mailer.surname}">Mailer</td>
+            <td th:text="${recived.mailer.address.country.countryName}">Country</td>
+            <td th:text="${recived.status}">Status</td>
+        </tr>
+    </table>
+    <span class="smalltitle">Общая статистика:</span>
+    <table>
+        <tr>
+            <th>Дата</th>
+            <th>От кого</th>
+            <th>Откуда</th>
+            <th>Статус</th>
+        </tr>
+
+        <tr th:each="parcel : ${parcels}">
+            <td th:text="${parcel.sendDate}">1</td>
+            <td th:text="${parcel.mailer.name}">Mailer</td>
+            <td th:text="${parcel.mailer.address.country.countryName}">Country</td>
             <td th:text="${parcel.status}">Status</td>
-    </tr>
-
-</table>
-
-<br>
-Отправленные вами:
-<table>
-    <tr>
-        <th>№</th>
-        <th>От</th>
-        <th>Кому</th>
-        <th>Статус</th>
-    </tr>
-    <tr th:each="sended : ${userSendedParcels}">
-        <td th:text="${sended.id}">1</td>
-        <td th:text="${sended.mailer.name}+' '+${sended.mailer.surname}">Mailer</td>
-        <td th:text="${sended.recipient.name}+' '+${sended.recipient.surname}">Recipient</td>
-        <td th:text="${sended.status}">Status</td>
-    </tr>
-
-</table>
-
-<br>
-Принятые вами:
-<table>
-    <tr>
-        <th>№</th>
-        <th>От</th>
-        <th>Кому</th>
-        <th>Статус</th>
-    </tr>
-    <tr th:each="recived : ${userRecivedParcels}">
-        <td th:text="${recived.id}">1</td>
-        <td th:text="${recived.mailer.name}+' '+${recived.mailer.surname}">Mailer</td>
-        <td th:text="${recived.recipient.name}+' '+${recived.recipient.surname}">Recipient</td>
-        <td th:text="${recived.status}">Status</td>
-    </tr>
-
-</table>
-
-<a href="/home" th:href="@{/}">На главную</a>
+        </tr>
+    </table>
+</div>
 </body>
 </html>
+
+

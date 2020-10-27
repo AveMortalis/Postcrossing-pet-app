@@ -1,35 +1,50 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <title>Welcome to postcrossing application</title>
-    <link rel="stylesheet" type="text/css" href="header.css"/>
-    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+	<th:block th:fragment="styleForHeader" >
+		<link  rel="stylesheet" type="text/css" th:href="@{css/header.css}"/>
+		<link  href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+	</th:block>
 </head>
 <body>
 
-<div class="wrpr" th:fragment="header">
+<div class="hdr" th:fragment="header">
 	<div class="logo">
 		POSTCROSSING
 	</div>
-	<ul class="account-menu">
-		<li class="acc-item login">
-			<a class="button" href="login" >LOGIN</a>
-		</li>
-		<li class="acc-item">
-			<a class="button" href="registration" >Регистрация</a>
-		</li>
-	</ul>
+	<th:ul class="account-menu">
+
+		<th:li class="acc-item login">
+			<a sec:authorize="hasRole('USER')" class="button" th:href="userDetails"><span sec:authentication="name"></span></a>
+			<a sec:authorize="hasRole('ANONYMOUS')" class="button" th:href="login" >Login</a>
+		</th:li>
+		<th:li class="acc-item logout">
+			<a sec:authorize="hasRole('USER')" class="button" href="logout">Logout</a>
+			<a sec:authorize="hasRole('ANONYMOUS')" class="button" href="registration">Регистрация</a>
+		</th:li>
+	</th:ul>
 	<nav>
 			<ul class="navbar">
-				<li class="nav-item nav-first">
-					<a class="button" href="home" >НА ГЛАВНУЮ</a>
-				</li>			
+				<th:li class="nav-item nav-first">
+					<a class="button" th:href="@{/}" >НА ГЛАВНУЮ</a>
+				</th:li>
 			    <li class="nav-item">
-			    	<a class="button" href="info" >ПОЛЕЗНАЯ ИНФОРМАЦИЯ</a>
+			    	<a class="button" href="faq" >ПОЛЕЗНАЯ ИНФОРМАЦИЯ</a>
 			    </li>
+				<li class="nav-item">
+					<a class="button" href="parcelStats" >СТАТИСТИКА</a>
+				</li>
+				<th:li class="nav-item dropdown" th:switch="${session.auth}">
+					<a class="button" href="#" th:case="true" th:switch="${session.auth}">ПОСЫЛКИ</a>
+					<div class="dropdown-content" th:case="true">
+								<a href="parcelRegistration">Зарегистрировать посылку</a>
+								<a href="getRecipentInfo">Отправить посылку</a>
+					</div>
+				</th:li>
 			    <li class="nav-item nav-last">
-			    	<a class="button" href="parcelStats"  >СТАТИСТИКА</a>
+			    	<a class="button" href="changeLanguage" >ИЗМЕНИТЬ ЯЗЫК</a>
 			    </li>
 			</ul>
 	</nav>

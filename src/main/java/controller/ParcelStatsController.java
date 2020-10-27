@@ -1,46 +1,43 @@
 package controller;
 
-import dao.ParcelDao;
-import entity.Parcel;
 import entity.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import service.HibernateUtil;
+import security.SecurityUser;
+import service.IParcelService;
+import service.IUserService;
 import service.ParcelService;
+import service.UserService;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.List;
 
 
 @Controller
 public class ParcelStatsController {
 
-    private ParcelService parcelService;
+    private IParcelService parcelService;
+    private IUserService userService;
 
     @Autowired
-    public ParcelStatsController(ParcelService parcelService) {
+    public ParcelStatsController(IParcelService parcelService, IUserService userService) {
         this.parcelService = parcelService;
+        this.userService=userService;
     }
 
-    @RequestMapping(value = "parcelStats", method = RequestMethod.GET)
-    public String getParcelStats(Model model, HttpSession session){
-        User user = (User) session.getAttribute("user");
+    @RequestMapping(value = "/parcelStats", method = RequestMethod.GET)
+    public String getParcelStats(Model model,@AuthenticationPrincipal SecurityUser securityUser){
+
         model.addAttribute("parcels",parcelService.getAll());
-        model.addAttribute("userSendedParcels",parcelService.getAllSendedByUser(user));
-        model.addAttribute("userRecivedParcels",parcelService.getAllRecivedByUser(user));
+
+        if(securityUser!=null){
+            User user = userService.getUserByLogin(securityUser.getUsername());
+            model.addAttribute("userSendedParcels",parcelService.getAllSendedByUser(user));
+            model.addAttribute("userRecivedParcels",parcelService.getAllReceivedByUser(user));
+        }
         return "parcelStats";
     }
 }

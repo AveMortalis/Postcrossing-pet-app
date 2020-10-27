@@ -1,65 +1,86 @@
 package controller;
 
-import dao.UserDao;
-import entity.Address;
+import entity.Parcel;
 import entity.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import service.HibernateUtil;
+import security.SecurityUser;
+import service.IParcelService;
+import service.IUserService;
+import service.ParcelService;
 import service.UserService;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class UserController {
 
+    private IUserService userService;
+
+    private IParcelService parcelService;
+
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
-    private UserService userService;
+    public UserController(IUserService userService, IParcelService parcelService, PasswordEncoder passwordEncoder){
+        this.userService=userService;
+        this.parcelService=parcelService;
+        this.passwordEncoder=passwordEncoder;
+    }
 
     @RequestMapping(value = "/registration",method = RequestMethod.GET)
     public String InitRegistrationPage(Model model){
         User usertoFill=new User();
         model.addAttribute("user",usertoFill);
+        model.addAttribute("stitle","Регистрация");
         model.addAttribute("actionType","registration");
-        return "registrationOrUpdate";
+        model.addAttribute("buttonTitle","Зарегистрироваться");
+        return "regOrUpdate";
     }
 
     @RequestMapping(value = "/registration",method = RequestMethod.POST)
     public String registration(@ModelAttribute User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
         return "redirect:/";
     }
 
     @RequestMapping(value = "/update",method = RequestMethod.GET)
-    public String InitUpdateUserDetailsPage(Model model,HttpSession session)
+    public String InitUpdateUserDetailsPage(Model model, @AuthenticationPrincipal SecurityUser securityUser)
     {
-        User userToUpdate=(User)session.getAttribute("user");
+        User userToUpdate=userService.getUserByLogin(securityUser.getUsername());
+        userToUpdate.setPassword("");
         model.addAttribute("user",userToUpdate);
         model.addAttribute("actionType","update");
-        return "registrationOrUpdate";
+        model.addAttribute("stitle","Изменение личных данных");
+        model.addAttribute("buttonTitle","Сохранить");
+        return "regOrUpdate";
     }
 
     @RequestMapping(value = "/update",method = RequestMethod.POST)
-    public String UpdateUserDetails(@ModelAttribute User user,HttpSession session) {
-        System.out.println(user);
+    public String UpdateUserDetails(@ModelAttribute User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.updateUserDetails(user);
-        session.setAttribute("user",user);
+        return "redirect:/userDetails";
+    }
+
+    @RequestMapping(value = "/userDetails",method = RequestMethod.GET)
+    public String ShowUserDetails(Model model,@AuthenticationPrincipal SecurityUser securityUser) {
+        User user=userService.getUserByLogin(securityUser.getUsername());
+        List<Parcel> last5=parcelService.getLastSendedUserParsels(5,user);
+        model.addAttribute("last5sended",last5);
+        model.addAttribute("availableToSend",userService.availableToSendByUser(user));
         return "userDetails";
     }
+
 
 
 }

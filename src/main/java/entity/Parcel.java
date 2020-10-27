@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 
 @Entity
 @Table(name="parcels")
@@ -23,16 +24,14 @@ public class Parcel implements Serializable{
     @JoinColumn(name="recipient_fk")
     private User recipient;
 
-    @Column(name = "details")
-    private String details;
+    @Column(name = "send_date")
+    private Date sendDate;
 
     @Column(name = "registration_code")
     private String registrationCode;
 
     @Column(name = "status")
     private String status;
-
-
 
     public int getId() {
         return id;
@@ -41,7 +40,6 @@ public class Parcel implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
-
 
     public User getMailer() {
         return mailer;
@@ -59,12 +57,12 @@ public class Parcel implements Serializable{
         this.recipient = recipient;
     }
 
-    public String getDetails() {
-        return details;
+    public Date getSendDate() {
+        return sendDate;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setSendDate(Date sendDate) {
+        this.sendDate = sendDate;
     }
 
     public String getRegistrationCode() {
@@ -93,7 +91,7 @@ public class Parcel implements Serializable{
         if (id != parcel.id) return false;
         if (mailer != null ? !mailer.equals(parcel.mailer) : parcel.mailer != null) return false;
         if (recipient != null ? !recipient.equals(parcel.recipient) : parcel.recipient != null) return false;
-        if (details != null ? !details.equals(parcel.details) : parcel.details != null) return false;
+        if (sendDate != null ? !sendDate.equals(parcel.sendDate) : parcel.sendDate != null) return false;
         if (registrationCode != null ? !registrationCode.equals(parcel.registrationCode) : parcel.registrationCode != null)
             return false;
         return status != null ? status.equals(parcel.status) : parcel.status == null;
@@ -104,21 +102,9 @@ public class Parcel implements Serializable{
         int result = id;
         result = 31 * result + (mailer != null ? mailer.hashCode() : 0);
         result = 31 * result + (recipient != null ? recipient.hashCode() : 0);
-        result = 31 * result + (details != null ? details.hashCode() : 0);
+        result = 31 * result + (sendDate != null ? sendDate.hashCode() : 0);
         result = 31 * result + (registrationCode != null ? registrationCode.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Parcel{" +
-                "id=" + id +
-                ", mailer=" + mailer +
-                ", recipient=" + recipient +
-                ", details='" + details + '\'' +
-                ", registrationCode='" + registrationCode + '\'' +
-                ", status='" + status + '\'' +
-                '}';
     }
 }

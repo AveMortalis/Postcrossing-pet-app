@@ -7,17 +7,22 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.ISpringTemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Configuration
 @EnableWebMvc
@@ -44,13 +49,13 @@ public class MvcViewConfig implements WebMvcConfigurer,ApplicationContextAware {
     public ISpringTemplateEngine templateEngine(){
         SpringTemplateEngine templateEngine=new SpringTemplateEngine();
         templateEngine.setEnableSpringELCompiler(true);
+        templateEngine.addDialect(new SpringSecurityDialect());
         templateEngine.setTemplateResolver(templateResolver());
         return templateEngine;
     }
 
     @Bean
     public SpringResourceTemplateResolver  templateResolver(){
-
         SpringResourceTemplateResolver  templateResolver=new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
         templateResolver.setPrefix("WEB-INF/templates/");
@@ -61,6 +66,6 @@ public class MvcViewConfig implements WebMvcConfigurer,ApplicationContextAware {
     }
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/css/**").addResourceLocations("classpath:static/css/");
+        registry.addResourceHandler("/css/**","/img/**").addResourceLocations("classpath:static/css/","classpath:static/img/");
     }
 }

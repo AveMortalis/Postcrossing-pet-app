@@ -1,27 +1,49 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" th:replace="fragments/layout::layout(~{::content},~{::title},~{::link})"  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
-    <title>Профиль пользователя</title>
-    <link th:replace="fragments/header :: styleForHeader"/>
+    <meta charset="UTF-8">
+    <title>User details</title>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/userDetails.css}"/>
 </head>
 <body>
-<div th:replace=" fragments/header :: header"></div>
-Привет, <span th:text="${session.user.name} +' '+ ${session.user.surname}"> Имя и фамилия</span>
-<br>
-Ты из  из города <span th:text="${session.user.address.countryName} +' '+ ${session.user.address.city}"> Страна и город</span>
-<br>
-Твой адресс <span th:text="${session.user.address.address}"> Адресс </span>
-<br>
-Почтовый индекс <span th:text=${session.user.address.postcode}> Почтовый индекс </span>
-<br>
-<ul>
-    <li><a href="update"> Изменить личные данные</a></li>
-    <li><a href="parcelRegistration"> Зарегистировать посылку</a></li>
-    <li><a href="getRecipentInfo">Отправить посылку</a></li>
-    <li><a href="logout">Разлогиниться</a></li>
-    <li><a href="parcelStats">Статистика отправлений</a></li>
-</ul>
-
+<div th:fragment="content" class="content">
+    <div class="account-details">
+        <div class="account-links">
+            <div class="account-details-item">
+                <div class="detail-icon"><img th:src="@{/img/send.png}"></div>
+                <div class="btn">
+                    <a href="getRecipentInfo">Отправить посылку</a>
+                </div>
+            </div>
+            <div class="account-details-item">
+                <div class="detail-icon"><img th:src="@{/img/reg.png}"></div>
+                <div class="btn">
+                    <a href="parcelRegistration">Зарегистрировать<br>посылку</a>
+                </div>
+            </div>
+            <div class="account-details-item">
+                <div class="detail-icon"><img th:src="@{/img/edit.png}"></div>
+                <div class="btn">
+                    <a href="update">Изменить личные<br>данные</a>
+                </div>
+            </div>
+            <div class="account-details-item">
+                <div class="detail-icon"><img th:src="@{/img/stats.png}"></div>
+                <div class="btn">
+                    <a href="parcelStats">Моя статистика</a>
+                </div>
+            </div>
+        </div>
+        <div class="account-details-item sendStats">
+            Вы можете отправить <b><span th:text="${availableToSend}"></span></b> посылок<br><br>
+            Последние отправленные вами посылки:
+            <ul>
+                <th:block th:if="${last5sended}">
+                    <li th:each="last:${last5sended}" th:text="${last.registrationCode}+' Получатель:'+${last.recipient.login}+' Статус:'+${last.status}"></li>
+                </th:block>
+            </ul>
+        </div>
+    </div>
+</div>
 </body>
 </html>

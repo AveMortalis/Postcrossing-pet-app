@@ -16,11 +16,9 @@ public class Address implements Serializable {
 
     private int id;
 
-    @Column(name = "country_name")
-    private String countryName;
-
-    @Column(name = "country_shortcut")
-    private String countryShortcut;
+    @OneToOne
+    @JoinColumn(name="country_shortcut")
+    private Country country;
 
     @Column(name = "city")
     private String city;
@@ -39,20 +37,12 @@ public class Address implements Serializable {
         this.id = id;
     }
 
-    public String getCountryName() {
-        return countryName;
+    public Country getCountry() {
+        return country;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
-    }
-
-    public String getCountryShortcut() {
-        return countryShortcut;
-    }
-
-    public void setCountryShortcut(String countryShortcut) {
-        this.countryShortcut = countryShortcut;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public String getCity() {
@@ -88,10 +78,7 @@ public class Address implements Serializable {
 
         if (id != address1.id) return false;
         if (postcode != address1.postcode) return false;
-        if (countryName != null ? !countryName.equals(address1.countryName) : address1.countryName != null)
-            return false;
-        if (countryShortcut != null ? !countryShortcut.equals(address1.countryShortcut) : address1.countryShortcut != null)
-            return false;
+        if (country != null ? !country.equals(address1.country) : address1.country != null) return false;
         if (city != null ? !city.equals(address1.city) : address1.city != null) return false;
         return address != null ? address.equals(address1.address) : address1.address == null;
     }
@@ -99,23 +86,10 @@ public class Address implements Serializable {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (countryName != null ? countryName.hashCode() : 0);
-        result = 31 * result + (countryShortcut != null ? countryShortcut.hashCode() : 0);
+        result = 31 * result + (country != null ? country.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + postcode;
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Address{" +
-                "id=" + id +
-                ", countryName='" + countryName + '\'' +
-                ", countryShortcut='" + countryShortcut + '\'' +
-                ", city='" + city + '\'' +
-                ", address='" + address + '\'' +
-                ", postcode=" + postcode +
-                '}';
     }
 }

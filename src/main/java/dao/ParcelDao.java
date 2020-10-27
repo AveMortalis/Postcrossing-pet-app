@@ -7,13 +7,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import service.HibernateUtil;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public class ParcelDao {
+public class ParcelDao implements IParcelDao {
 
     private SessionFactory sessionFactory;
 
@@ -44,9 +42,13 @@ public class ParcelDao {
 
     public void update(Parcel parcel){
         Session session=sessionFactory.getCurrentSession();
+        session.update(parcel);
+    }
+
+    public void updateParcelStatus(Parcel parcel){
+        Session session=sessionFactory.getCurrentSession();
         Parcel parcelForUpdate= session.get(Parcel.class,parcel.getId());
         parcelForUpdate.setStatus(parcel.getStatus());
-        parcelForUpdate.setDetails(parcel.getDetails());
     }
 
     public Parcel getParcelByRecipientAndRegcode(User recipient,String regcode){
@@ -59,6 +61,24 @@ public class ParcelDao {
         return parcelList.isEmpty()?null:parcelList.get(0);
     }
 
+    public List<Parcel> getAllSendedUserParcelsHaveReceived(User mailer){
+        Session session=sessionFactory.getCurrentSession();
+        List<Parcel> parcelList=session.createQuery("from entity.Parcel where mailer=:mailer and status=:status",Parcel.class)
+                .setParameter("mailer",mailer)
+                .setParameter("status","Received")
+                .list();
+        return parcelList;
+    }
+
+    public List<Parcel> getAllTravelingUserParcels(User mailer){
+        Session session=sessionFactory.getCurrentSession();
+        List<Parcel> parcelList=session.createQuery("from entity.Parcel where mailer=:mailer and status=:status",Parcel.class)
+                .setParameter("mailer",mailer)
+                .setParameter("status","Sended")
+                .list();
+        return parcelList;
+    }
+
     public List<Parcel> getAllSendedUserParcels(User user){
         Session session=sessionFactory.getCurrentSession();
         List<Parcel> parcelList=session.createQuery("from entity.Parcel where mailer=:mailer",Parcel.class)
@@ -67,12 +87,27 @@ public class ParcelDao {
         return parcelList.isEmpty()?null:parcelList;
     }
 
-    public List<Parcel> getAllRecivedUserParcels(User user){
+    public List<Parcel> getAllReceivedParcelsByUser(User user){
         Session session=sessionFactory.getCurrentSession();
-        List<Parcel> parcelList=session.createQuery("from entity.Parcel where recipient=:recipient",Parcel.class)
+        List<Parcel> parcelList=session.createQuery("from entity.Parcel where recipient=:recipient and status=:status",Parcel.class)
                 .setParameter("recipient",user)
+                .setParameter("status","Received")
                 .list();
         return parcelList.isEmpty()?null:parcelList;
     }
+
+    public int getCountOfParcels(){
+        Session session=sessionFactory.getCurrentSession();
+        return ((Number)(session.createQuery("select count(*) from entity.Parcel")).uniqueResult()).intValue();
+    }
+
+    public int getCountOfReceivedParcels(){
+        Session session=sessionFactory.getCurrentSession();
+        return ((Number)(session.createQuery("select count(*) from entity.Parcel where status=:status")
+                .setParameter("status","Received"))
+                .uniqueResult())
+                .intValue();
+    }
+
 
 }
