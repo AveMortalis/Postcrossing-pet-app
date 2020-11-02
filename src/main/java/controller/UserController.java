@@ -3,7 +3,6 @@ package controller;
 import entity.Parcel;
 import entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import security.SecurityUser;
 import service.IParcelService;
 import service.IUserService;
-import service.ParcelService;
-import service.UserService;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -75,12 +72,22 @@ public class UserController {
     @RequestMapping(value = "/userDetails",method = RequestMethod.GET)
     public String ShowUserDetails(Model model,@AuthenticationPrincipal SecurityUser securityUser) {
         User user=userService.getUserByLogin(securityUser.getUsername());
-        List<Parcel> last5=parcelService.getLastSendedUserParsels(5,user);
-        model.addAttribute("last5sended",last5);
+        List<Parcel> last5=parcelService.getLastSentUserParcels(5,user);
+        model.addAttribute("last5sent",last5);
         model.addAttribute("availableToSend",userService.availableToSendByUser(user));
         return "userDetails";
     }
 
+    @RequestMapping(value = "login",method = RequestMethod.GET)
+    public String initLoginForm(Model model){
+        return "login";
+    }
+
+    @RequestMapping(value = "logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
+    }
 
 
 }

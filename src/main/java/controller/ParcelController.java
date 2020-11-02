@@ -34,6 +34,7 @@ public class ParcelController {
 
     @RequestMapping(value = "/getRecipentInfo",method = RequestMethod.GET)
     public String getParcelRecipient(@AuthenticationPrincipal SecurityUser securityUser, Model model){
+
         User mailer = userService.getUserByLogin(securityUser.getUsername());
         if(userService.isSendLimitReached(mailer)){
             return "faq";
@@ -44,6 +45,7 @@ public class ParcelController {
             model.addAttribute("sendDate",parcel.getSendDate().toString());
             return "recipientInfo";
         }
+
     }
 
     @RequestMapping(value = "/parcelRegistration",method = RequestMethod.POST)
@@ -52,13 +54,16 @@ public class ParcelController {
         User recipient = userService.getUserByLogin(securityUser.getUsername());
         parcelService.registerParcelByRegcode(request.getParameter("regcode").trim(),recipient);
         return "redirect:/userDetails";
+
     }
 
     @RequestMapping(value = "/parcelRegistration",method = RequestMethod.GET)
     public String getRecipient(Model model){
+
         String regcode="";
         model.addAttribute("regcode",regcode);
         return "parcelRegistration";
+
     }
 
 }

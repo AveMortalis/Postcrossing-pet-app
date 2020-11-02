@@ -17,13 +17,13 @@ public interface IParcelService {
 
     public Parcel addNewParcel(User mailer);
 
-    public List<Parcel> getAllSendedByUser(User user);
+    public List<Parcel> getAllSentByUser(User user);
 
     public List<Parcel> getAllReceivedByUser(User user);
 
-    public List<Parcel> getLastParsels(final int countOfParcelsToDisplay);
+    public List<Parcel> getLastParcels(final int countOfParcelsToDisplay);
 
-    public List<Parcel> getLastSendedUserParsels(final int countOfParcelsToDisplay,User user);
+    public List<Parcel> getLastSentUserParcels(final int countOfParcelsToDisplay, User user);
 
     public int getCountOfParcels();
 

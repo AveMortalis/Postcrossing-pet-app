@@ -40,6 +40,8 @@ public class ParcelService implements IParcelService {
         Parcel parcel=parcelDao.getParcelByRecipientAndRegcode(recipient,regcode);
         if(parcel!=null) {
             parcel.setStatus("Received");
+            LocalDate receiveDate= LocalDate.now();
+            parcel.setReceiveDate(Date.valueOf(receiveDate));
             awaitListDao.addUserToAwaitList(parcel.getMailer());
         }
     }
@@ -55,10 +57,9 @@ public class ParcelService implements IParcelService {
             awaitListDao.delete(awaitList);
         }
         LocalDate sendDate= LocalDate.now();
-
         Parcel parcel = new Parcel();
         parcel.setSendDate(Date.valueOf(sendDate));
-        parcel.setStatus("Sended");
+        parcel.setStatus("Sent");
         parcel.setMailer(mailer);
         parcel.setRecipient(recipient);
         String mailerCountry = mailer.getAddress().getCountry().getCountryShortcut();
@@ -69,8 +70,8 @@ public class ParcelService implements IParcelService {
     }
 
     @Transactional
-    public List<Parcel> getAllSendedByUser(User user){
-        return parcelDao.getAllSendedUserParcels(user);
+    public List<Parcel> getAllSentByUser(User user){
+        return parcelDao.getAllSentUserParcels(user);
     }
 
     @Transactional
@@ -84,7 +85,7 @@ public class ParcelService implements IParcelService {
     }
 
     @Transactional
-    public List<Parcel> getLastParsels(final int COUNT_OF_PARCELS_TO_DISPLAY){
+    public List<Parcel> getLastParcels(final int COUNT_OF_PARCELS_TO_DISPLAY){
         List<Parcel> parcels=getAll();
         if(parcels.size()>COUNT_OF_PARCELS_TO_DISPLAY){
             parcels =parcels.subList(parcels.size()-COUNT_OF_PARCELS_TO_DISPLAY,parcels.size());}
@@ -92,8 +93,8 @@ public class ParcelService implements IParcelService {
     }
 
     @Transactional
-    public List<Parcel> getLastSendedUserParsels(final int COUNT_OF_PARCELS_TO_DISPLAY,User user){
-        List<Parcel> parcels=getAllSendedByUser(user);
+    public List<Parcel> getLastSentUserParcels(final int COUNT_OF_PARCELS_TO_DISPLAY, User user){
+        List<Parcel> parcels= getAllSentByUser(user);
         if(parcels!=null) {
             if (parcels.size() > COUNT_OF_PARCELS_TO_DISPLAY) {
                 parcels = parcels.subList(parcels.size() - COUNT_OF_PARCELS_TO_DISPLAY, parcels.size());

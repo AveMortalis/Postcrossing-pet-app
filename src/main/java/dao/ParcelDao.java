@@ -55,13 +55,13 @@ public class ParcelDao implements IParcelDao {
         Session session=sessionFactory.getCurrentSession();
         List<Parcel> parcelList=session.createQuery("from entity.Parcel where recipient=:recipient and status=:status and registrationCode=:regcode",Parcel.class)
                 .setParameter("recipient",recipient)
-                .setParameter("status","Sended")
+                .setParameter("status","Sent")
                 .setParameter("regcode",regcode)
                 .list();
         return parcelList.isEmpty()?null:parcelList.get(0);
     }
 
-    public List<Parcel> getAllSendedUserParcelsHaveReceived(User mailer){
+    public List<Parcel> getAllSentUserParcelsHaveReceived(User mailer){
         Session session=sessionFactory.getCurrentSession();
         List<Parcel> parcelList=session.createQuery("from entity.Parcel where mailer=:mailer and status=:status",Parcel.class)
                 .setParameter("mailer",mailer)
@@ -74,12 +74,12 @@ public class ParcelDao implements IParcelDao {
         Session session=sessionFactory.getCurrentSession();
         List<Parcel> parcelList=session.createQuery("from entity.Parcel where mailer=:mailer and status=:status",Parcel.class)
                 .setParameter("mailer",mailer)
-                .setParameter("status","Sended")
+                .setParameter("status","Sent")
                 .list();
         return parcelList;
     }
 
-    public List<Parcel> getAllSendedUserParcels(User user){
+    public List<Parcel> getAllSentUserParcels(User user){
         Session session=sessionFactory.getCurrentSession();
         List<Parcel> parcelList=session.createQuery("from entity.Parcel where mailer=:mailer",Parcel.class)
                 .setParameter("mailer",user)
@@ -104,9 +104,9 @@ public class ParcelDao implements IParcelDao {
     public int getCountOfReceivedParcels(){
         Session session=sessionFactory.getCurrentSession();
         return ((Number)(session.createQuery("select count(*) from entity.Parcel where status=:status")
-                .setParameter("status","Received"))
-                .uniqueResult())
-                .intValue();
+                .setParameter("status","Received")
+                .getSingleResult())).intValue();
+
     }
 
 

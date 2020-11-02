@@ -131,4 +131,18 @@ public class User implements Serializable{
         result = 31 * result + (details != null ? details.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", address=" + address +
+                ", details='" + details + '\'' +
+                '}';
+    }
 }

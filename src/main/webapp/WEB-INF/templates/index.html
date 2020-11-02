@@ -28,8 +28,8 @@
             <ul>
                 <li th:each="parcel:${parcels}" >
                     <th:block th:switch="${parcel.status}">
-                        <span th:case="'Sended'" th:text="'Пользователь '+${parcel.mailer.login}+' отправил(а) посылку в '+${parcel.recipient.address.country.countryName}"></span>
-                        <span th:case="'Received'" th:text="'Пользователь '+${parcel.recipient.login}+' получил(а) посылку от '+${parcel.mailer.login}+ ' из '+${parcel.recipient.address.country.countryName}"></span>
+                        <span th:case="'Sent'" th:text="'Пользователь '+${parcel.mailer.login}+' отправил(а) посылку в '+${parcel.recipient.address.country.countryName}"></span>
+                        <span th:case="'Received'" th:text="'Пользователь '+${parcel.recipient.login}+' получил(а) посылку от '+${parcel.mailer.login}+ ' из '+${parcel.mailer.address.country.countryName}"></span>
                         <span th:case="'Lost'" th:text="'Посылка пользователя '+${parcel.mailer.login}+' была помечена как утерянная'"></span>
                     </th:block>
                 </li>

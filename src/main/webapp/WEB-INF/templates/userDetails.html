@@ -38,8 +38,8 @@
             Вы можете отправить <b><span th:text="${availableToSend}"></span></b> посылок<br><br>
             Последние отправленные вами посылки:
             <ul>
-                <th:block th:if="${last5sended}">
-                    <li th:each="last:${last5sended}" th:text="${last.registrationCode}+' Получатель:'+${last.recipient.login}+' Статус:'+${last.status}"></li>
+                <th:block th:if="${last5sent}">
+                    <li th:each="last:${last5sent}" th:text="${last.registrationCode}+' Получатель:'+${last.recipient.login}+' Статус:'+${last.status}"></li>
                 </th:block>
             </ul>
         </div>

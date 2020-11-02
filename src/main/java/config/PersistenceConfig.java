@@ -41,7 +41,7 @@ public class PersistenceConfig {
         LocalSessionFactoryBean sessionFactory=new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("entity");
-        //sessionFactory.setHibernateProperties(hibernateProperties());
+        sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
 

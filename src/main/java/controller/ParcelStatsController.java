@@ -10,10 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import security.SecurityUser;
 import service.IParcelService;
 import service.IUserService;
-import service.ParcelService;
-import service.UserService;
-
-import javax.servlet.http.HttpSession;
 
 
 @Controller
@@ -35,7 +31,7 @@ public class ParcelStatsController {
 
         if(securityUser!=null){
             User user = userService.getUserByLogin(securityUser.getUsername());
-            model.addAttribute("userSendedParcels",parcelService.getAllSendedByUser(user));
+            model.addAttribute("userSendedParcels",parcelService.getAllSentByUser(user));
             model.addAttribute("userRecivedParcels",parcelService.getAllReceivedByUser(user));
         }
         return "parcelStats";

@@ -1,7 +1,6 @@
 package service;
 
 import dao.*;
-import entity.AwaitList;
 import entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +20,6 @@ public class UserService implements IUserService {
         this.userDao = userDao;
         this.awaitListDao = awaitListDao;
         this.parcelDao=parcelDao;
-    }
-
-    @Transactional
-    public User logIn(User userFromFrom){
-        User user=userDao.login(userFromFrom.getLogin(),userFromFrom.getPassword());
-        return user;
     }
 
     @Transactional
@@ -65,66 +58,36 @@ public class UserService implements IUserService {
 
     @Transactional
     public boolean isSendLimitReached(User user){
-        int countOfSendedParcelsHaveReceived = parcelDao.getAllSendedUserParcelsHaveReceived(user).size();
-        int countOfTravelingParcels = parcelDao.getAllTravelingUserParcels(user).size();
-        int sendLimit=5;
-        if (countOfSendedParcelsHaveReceived<=5){
-            return 5<=countOfTravelingParcels?true:false;
-        }else if (countOfSendedParcelsHaveReceived<=15){
-            return 6<=countOfTravelingParcels?true:false;
-        }else if (countOfSendedParcelsHaveReceived<=25){
-            return 7<=countOfTravelingParcels?true:false;
-        }else if (countOfSendedParcelsHaveReceived<=35){
-            return 8<=countOfTravelingParcels?true:false;
-        }else if (countOfSendedParcelsHaveReceived<=45){
-            return 9<=countOfTravelingParcels?true:false;
-        }else if (countOfSendedParcelsHaveReceived<=55){
-            return 10<=countOfTravelingParcels?true:false;
-        }else if (countOfSendedParcelsHaveReceived<=85){
-            return 11<=countOfTravelingParcels?true:false;
-        }else if (countOfSendedParcelsHaveReceived<=110){
-            return 12<=countOfTravelingParcels?true:false;
-        }else if (countOfSendedParcelsHaveReceived<=150){
-            return 14<=countOfTravelingParcels?true:false;
-        }else if (countOfSendedParcelsHaveReceived>150){
-            return ((int)(14+(countOfSendedParcelsHaveReceived-150)/50))<=countOfTravelingParcels?true:false;
-        }
-        return false;
+
+        return availableToSendByUser(user)==0;
+
     }
 
     @Transactional
     public int availableToSendByUser(User user){
-        int countOfSendedParcelsHaveReceived = parcelDao.getAllSendedUserParcelsHaveReceived(user).size();
+
+        int countOfSendedParcelsHaveReceived = parcelDao.getAllSentUserParcelsHaveReceived(user).size();
+
         int countOfTravelingParcels = parcelDao.getAllTravelingUserParcels(user).size();
-        int sendLimit=5;
-        if (countOfSendedParcelsHaveReceived<=5){
-            return 5-countOfTravelingParcels;
-        }else if (countOfSendedParcelsHaveReceived<=15){
-            return 6-countOfTravelingParcels;
-        }else if (countOfSendedParcelsHaveReceived<=25){
-            return 7-countOfTravelingParcels;
-        }else if (countOfSendedParcelsHaveReceived<=35){
-            return 8-countOfTravelingParcels;
-        }else if (countOfSendedParcelsHaveReceived<=45){
-            return 9-countOfTravelingParcels;
-        }else if (countOfSendedParcelsHaveReceived<=55){
-            return 10-countOfTravelingParcels;
-        }else if (countOfSendedParcelsHaveReceived<=85){
-            return 11-countOfTravelingParcels;
-        }else if (countOfSendedParcelsHaveReceived<=110){
-            return 12-countOfTravelingParcels;
-        }else if (countOfSendedParcelsHaveReceived<=150){
-            return 14-countOfTravelingParcels;
-        }else if (countOfSendedParcelsHaveReceived>150){
-            return ((int)(14+(countOfSendedParcelsHaveReceived-150)/50))-countOfTravelingParcels;
+
+        int sendLimit=5+countOfSendedParcelsHaveReceived/20;
+
+        if (sendLimit>50){
+            sendLimit=50;
         }
-        return 0;
+        int availableToSend=sendLimit-countOfTravelingParcels;
+
+        if(availableToSend>0){
+            return availableToSend;
+        }else {
+            return 0;
+        }
     }
 
 
     @Transactional
     public void searchForLostUserParcels(User user){
-        userDao.searchingForLostUserParcels(user);
+        userDao.searchForLostUserParcelsAndMarkThemAsLost(user);
     }
 
 }

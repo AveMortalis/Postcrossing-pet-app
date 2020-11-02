@@ -20,12 +20,10 @@ public interface IUserDao {
 
     public void updateUser(User user);
 
-    public User login(String login,String pass);
-
     public int getCountOfUsers();
 
     public int getCountOfCountries();
 
-    public void searchingForLostUserParcels(User user);
+    public void searchForLostUserParcelsAndMarkThemAsLost(User user);
 
 }

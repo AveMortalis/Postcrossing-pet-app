@@ -4,8 +4,6 @@ import entity.User;
 
 public interface IUserService {
 
-    public User logIn(User userFromFrom);
-
     public void updateUserDetails(User user);
 
     public User getUserByLogin(String login);

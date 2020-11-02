@@ -15,6 +15,7 @@ public class AwaitListDao implements IWaiters{
 
     private SessionFactory sessionFactory;
 
+
     @Autowired
     public AwaitListDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -22,13 +23,13 @@ public class AwaitListDao implements IWaiters{
 
     public List<AwaitList> getAll(){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM entity.AwaitList");
+        Query query = session.createQuery("FROM entity.AwaitList",AwaitList.class);
         return query.list();
     }
     
     public AwaitList getFirstRecordFromAwaitList(User user){
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("FROM entity.AwaitList where user_id_fk!=:userId and id=(select MIN(id) from entity.AwaitList where user_id_fk!=:userId)",AwaitList.class).setParameter("userId",user.getId());
+        Query query = session.createQuery("FROM entity.AwaitList where user.id!=:userId and id=(select MIN(id) from entity.AwaitList where user.id!=:userId)",AwaitList.class).setParameter("userId",user.getId());
         if(query.list().isEmpty()==false){
             AwaitList awaitList=(AwaitList) query.list().get(0);
             return awaitList;

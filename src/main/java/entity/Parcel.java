@@ -27,11 +27,22 @@ public class Parcel implements Serializable{
     @Column(name = "send_date")
     private Date sendDate;
 
+    @Column(name = "receive_date")
+    private Date receiveDate;
+
     @Column(name = "registration_code")
     private String registrationCode;
 
     @Column(name = "status")
     private String status;
+
+    public Date getReceiveDate() {
+        return receiveDate;
+    }
+
+    public void setReceiveDate(Date receiveDate) {
+        this.receiveDate = receiveDate;
+    }
 
     public int getId() {
         return id;
