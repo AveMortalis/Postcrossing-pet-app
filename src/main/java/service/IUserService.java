@@ -20,7 +20,6 @@ public interface IUserService {
 
     public boolean isSendLimitReached(User user);
 
-    public int availableToSendByUser(User user);
+    public int getCountOfParcelsAvailableToSendByUser(User user);
 
-    public void searchForLostUserParcels(User user);
 }

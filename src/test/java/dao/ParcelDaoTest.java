@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Transactional
@@ -109,7 +107,7 @@ class ParcelDaoTest {
         mailer.setId(6);
         int countOfReceived=4;
 
-        List<Parcel> parcels=parcelDao.getAllSentUserParcelsHaveReceived(mailer);
+        List<Parcel> parcels=parcelDao.getAllSentUserParcelsThatHaveBeenReceived(mailer);
         Assertions.assertEquals(countOfReceived,parcels.size());
 
     }
@@ -132,7 +130,7 @@ class ParcelDaoTest {
         mailer.setId(6);
         int countOfSent=7;
 
-        List<Parcel> parcels=parcelDao.getAllSentUserParcels(mailer);
+        List<Parcel> parcels=parcelDao.getAllParcelsSentByUser(mailer);
         Assertions.assertEquals(countOfSent,parcels.size());
     }
 
@@ -143,14 +141,14 @@ class ParcelDaoTest {
         user.setId(4);
         int countOfReceivedByUser=3;
 
-        List<Parcel> parcels=parcelDao.getAllReceivedParcelsByUser(user);
+        List<Parcel> parcels=parcelDao.getAllParcelsReceivedByUser(user);
         Assertions.assertEquals(countOfReceivedByUser,parcels.size());
     }
 
     @Test
     @Sql({"classpath:data.sql"})
     void getCountOfParcels() {
-        int countOfParcels=parcelDao.getCountOfParcels();
+        int countOfParcels=parcelDao.getTotalCountOfParcels();
 
         Assertions.assertEquals(15,countOfParcels);
 
@@ -159,7 +157,7 @@ class ParcelDaoTest {
     @Test
     @Sql({"classpath:data.sql"})
     void getCountOfReceivedParcels() {
-        int countOfParcelsReceived=parcelDao.getCountOfReceivedParcels();
+        int countOfParcelsReceived=parcelDao.getTotalCountOfReceivedParcels();
 
         Assertions.assertEquals(12,countOfParcelsReceived);
     }

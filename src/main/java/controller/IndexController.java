@@ -23,18 +23,18 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String defaulttt(Model model, HttpSession session) {
+    public String getMainPage(Model model) {
 
         model.addAttribute("parcels", parcelService.getLastParcels(12));
-        model.addAttribute("countOfParcels", parcelService.getCountOfParcels());
-        model.addAttribute("countOfReceivedParcels", parcelService.getCountOfReceivedParcels());
+        model.addAttribute("countOfParcels", parcelService.getTotalCountOfParcels());
+        model.addAttribute("countOfReceivedParcels", parcelService.getTotalCountOfReceivedParcels());
         model.addAttribute("countOfCountries", userService.getCountOfCountries());
         model.addAttribute("countOfUsers", userService.getCountOfUsers());
         return "index";
     }
 
     @RequestMapping(value = "faq", method = RequestMethod.GET)
-    public String faq(Model model){
+    public String getFaqPage(){
 
         return "faq";
 

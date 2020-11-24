@@ -2,7 +2,7 @@ package service;
 
 
 import dao.*;
-import entity.AwaitList;
+import entity.QueueingRecipient;
 import entity.Parcel;
 import entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,43 +18,46 @@ public class ParcelService implements IParcelService {
 
     private IParcelDao parcelDao;
 
-    private IWaiters awaitListDao;
+    private IQueueingRecipientDao queueingRecipientDao;
 
     private IUserDao userDao;
 
     @Autowired
-    public ParcelService(IParcelDao parcelDao, IWaiters awaitListDao,IUserDao userDao) {
+    public ParcelService(IParcelDao parcelDao, IQueueingRecipientDao queueingRecipientDao,IUserDao userDao) {
         this.parcelDao = parcelDao;
-        this.awaitListDao = awaitListDao;
+        this.queueingRecipientDao = queueingRecipientDao;
         this.userDao=userDao;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Parcel> getAll(){
         return parcelDao.getAll();
     }
 
     @Transactional
-    public void registerParcelByRegcode(String regcode, User recipient){
+    public boolean registerParcelByRegcode(String regcode, User recipient){
 
         Parcel parcel=parcelDao.getParcelByRecipientAndRegcode(recipient,regcode);
         if(parcel!=null) {
             parcel.setStatus("Received");
             LocalDate receiveDate= LocalDate.now();
             parcel.setReceiveDate(Date.valueOf(receiveDate));
-            awaitListDao.addUserToAwaitList(parcel.getMailer());
+            queueingRecipientDao.addUserToAwaitList(parcel.getMailer());
+            return true;
         }
+        return false;
     }
 
     @Transactional
     public Parcel addNewParcel(User mailer){
-        AwaitList awaitList=awaitListDao.getFirstRecordFromAwaitList(mailer);
+
+        QueueingRecipient queueingRecipient =queueingRecipientDao.getFirstRecipientFromFromQueueingRecipientsButNotCurrent(mailer);
         User recipient;
-        if (awaitList==null){
+        if (queueingRecipient ==null){
             recipient = userDao.getRandomUserButNotCurrent(mailer);
         }else {
-            recipient= awaitList.getUser();
-            awaitListDao.delete(awaitList);
+            recipient= queueingRecipient.getUser();
+            queueingRecipientDao.delete(queueingRecipient);
         }
         LocalDate sendDate= LocalDate.now();
         Parcel parcel = new Parcel();
@@ -69,31 +72,34 @@ public class ParcelService implements IParcelService {
         return parcel;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Parcel> getAllSentByUser(User user){
-        return parcelDao.getAllSentUserParcels(user);
+        return parcelDao.getAllParcelsSentByUser(user);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Parcel> getAllReceivedByUser(User user){
-        return parcelDao.getAllReceivedParcelsByUser(user);
+        return parcelDao.getAllParcelsReceivedByUser(user);
     }
 
     private String generateRegcode(String mailerCountry,String recipientCountry){
+
         String regcode = (mailerCountry+(int)(Math.random() * 1000000) + recipientCountry);
         return regcode;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Parcel> getLastParcels(final int COUNT_OF_PARCELS_TO_DISPLAY){
+
         List<Parcel> parcels=getAll();
         if(parcels.size()>COUNT_OF_PARCELS_TO_DISPLAY){
             parcels =parcels.subList(parcels.size()-COUNT_OF_PARCELS_TO_DISPLAY,parcels.size());}
         return parcels;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Parcel> getLastSentUserParcels(final int COUNT_OF_PARCELS_TO_DISPLAY, User user){
+
         List<Parcel> parcels= getAllSentByUser(user);
         if(parcels!=null) {
             if (parcels.size() > COUNT_OF_PARCELS_TO_DISPLAY) {
@@ -103,16 +109,20 @@ public class ParcelService implements IParcelService {
         return parcels;
     }
 
-    @Transactional
-    public int getCountOfParcels(){
-       return parcelDao.getCountOfParcels();
+    @Transactional(readOnly = true)
+    public int getTotalCountOfParcels(){
+       return parcelDao.getTotalCountOfParcels();
+    }
+
+    @Transactional(readOnly = true)
+    public int getTotalCountOfReceivedParcels(){
+        return parcelDao.getTotalCountOfReceivedParcels();
     }
 
     @Transactional
-    public int getCountOfReceivedParcels(){
-        return parcelDao.getCountOfReceivedParcels();
+    public void searchForLostParcelsAndMarkThemAsLost(){
+        parcelDao.searchForLostParcelsAndMarkThemAsLost();
     }
-
 
 
 }

@@ -20,10 +20,8 @@ public interface IUserDao {
 
     public void updateUser(User user);
 
-    public int getCountOfUsers();
+    public int getTotalCountOfUsers();
 
-    public int getCountOfCountries();
-
-    public void searchForLostUserParcelsAndMarkThemAsLost(User user);
+    public int getTotalCountOfCountries();
 
 }

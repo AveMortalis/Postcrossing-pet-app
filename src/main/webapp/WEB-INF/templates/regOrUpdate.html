@@ -13,26 +13,42 @@
 
             <input type="hidden" th:field="*{id}">
 
+
             <div class="field">
+                <div th:if="${#fields.hasErrors('login')}" class="regError">
+                    <a th:errors="*{login}">Incorrect date</a>
+                </div>
                 <label for="log1" class="labelForField">Логин</label>
                 <input type="text" th:field="*{login}" id="log1">
             </div>
             <div class="field">
+                <div th:if="${#fields.hasErrors('password')}" class="regError">
+                    <a th:errors="*{password}">Incorrect date</a>
+                </div>
                 <label  class="labelForField" for="pass1">Пароль</label>
                 <input type="text" th:field="*{password}" id="pass1">
 
             </div>
             <div class="field">
+                <div th:if="${#fields.hasErrors('name')}" class="regError">
+                    <a th:errors="*{name}">Incorrect date</a>
+                </div>
                 <label for="name" class="labelForField">Имя</label>
                 <input type="text" th:field="*{name}" id="name">
             </div>
 
             <div class="field">
+                <div  th:if="${#fields.hasErrors('surname')}" class="regError">
+                    <a th:errors="*{surname}">Incorrect date</a>
+                </div>
                 <label for="surname" class="labelForField">Фамилия</label>
                 <input type="text" th:field="*{surname}" id="surname">
 
             </div>
             <div class="field">
+                <div th:if="${#fields.hasErrors('email')}" class="regError">
+                    <a  th:errors="*{email}">Incorrect date</a>
+                </div>
                 <label for="email" class="labelForField">Email</label>
                 <input type="text" th:field="*{email}" id="email">
 
@@ -41,7 +57,7 @@
             <input type="hidden" th:field="*{address.id}">
 
             <div class="field">
-                <label for="country" class="labelForField">Страна</label>
+                <label  class="labelForField">Страна</label>
                 <select th:field="*{address.country.countryShortcut}">
                     <option value="AF">Afghanistan</option>
                     <option value="AX">Åland Islands</option>
@@ -296,21 +312,33 @@
             </div>
 
             <div class="field">
+                <div  th:if="${#fields.hasErrors('address.city')}" class="regError">
+                    <a th:errors="*{address.city}">Incorrect date</a>
+                </div>
                 <label for="city" class="labelForField">Город</label>
                 <input type="text" th:field="*{address.city}" id="city">
             </div>
 
             <div class="field">
+                <div th:if="${#fields.hasErrors('address.address')}" class="regError">
+                    <a  th:errors="*{address.address}">Incorrect date</a>
+                </div>
                 <label for="address" class="labelForField">Адрес</label>
                 <input type="text" th:field="*{address.address}" id="address">
             </div>
 
             <div class="field">
+                <div th:if="${#fields.hasErrors('address.postcode')}"  class="regError">
+                    <a th:errors="*{address.postcode}">Incorrect date</a>
+                </div>
                 <label for="postcode" class="labelForField">Почтовый индекс</label>
                 <input type="text"  th:field="*{address.postcode}" id="postcode">
             </div>
 
             <div class="field details">
+                <div th:if="${#fields.hasErrors('details')}" class="regError">
+                    <a  th:errors="*{details}">Incorrect date</a>
+                </div>
                 <label for="details" class="labelForField">О себе</label>
                 <textarea name="details" th:field="*{details}" id="details">
                     (Максимум 250 символов)

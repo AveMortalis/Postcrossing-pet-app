@@ -2,21 +2,15 @@ package dao;
 
 import config.TestConfig;
 import entity.User;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sql.DataSource;
 import java.util.List;
-
-import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.HSQL;
 
 
 @ExtendWith(SpringExtension.class)
@@ -104,13 +98,13 @@ public class UserDaoTest {
     @Test
     @Sql({"classpath:data.sql"})
     void getCountOfUsers() {
-        Assertions.assertEquals(7,userDao.getCountOfUsers());
+        Assertions.assertEquals(7,userDao.getTotalCountOfUsers());
     }
 
     @Test
     @Sql({"classpath:data.sql"})
     void getCountOfCountries() {
-        Assertions.assertEquals(5,userDao.getCountOfCountries());
+        Assertions.assertEquals(5,userDao.getTotalCountOfCountries());
     }
 
     @Test

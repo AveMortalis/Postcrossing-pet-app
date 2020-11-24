@@ -8,6 +8,8 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -61,7 +63,7 @@ public class ParcelDao implements IParcelDao {
         return parcelList.isEmpty()?null:parcelList.get(0);
     }
 
-    public List<Parcel> getAllSentUserParcelsHaveReceived(User mailer){
+    public List<Parcel> getAllSentUserParcelsThatHaveBeenReceived(User mailer){
         Session session=sessionFactory.getCurrentSession();
         List<Parcel> parcelList=session.createQuery("from entity.Parcel where mailer=:mailer and status=:status",Parcel.class)
                 .setParameter("mailer",mailer)
@@ -79,7 +81,7 @@ public class ParcelDao implements IParcelDao {
         return parcelList;
     }
 
-    public List<Parcel> getAllSentUserParcels(User user){
+    public List<Parcel> getAllParcelsSentByUser(User user){
         Session session=sessionFactory.getCurrentSession();
         List<Parcel> parcelList=session.createQuery("from entity.Parcel where mailer=:mailer",Parcel.class)
                 .setParameter("mailer",user)
@@ -87,7 +89,7 @@ public class ParcelDao implements IParcelDao {
         return parcelList.isEmpty()?null:parcelList;
     }
 
-    public List<Parcel> getAllReceivedParcelsByUser(User user){
+    public List<Parcel> getAllParcelsReceivedByUser(User user){
         Session session=sessionFactory.getCurrentSession();
         List<Parcel> parcelList=session.createQuery("from entity.Parcel where recipient=:recipient and status=:status",Parcel.class)
                 .setParameter("recipient",user)
@@ -96,17 +98,26 @@ public class ParcelDao implements IParcelDao {
         return parcelList.isEmpty()?null:parcelList;
     }
 
-    public int getCountOfParcels(){
+    public int getTotalCountOfParcels(){
         Session session=sessionFactory.getCurrentSession();
         return ((Number)(session.createQuery("select count(*) from entity.Parcel")).uniqueResult()).intValue();
     }
 
-    public int getCountOfReceivedParcels(){
+    public int getTotalCountOfReceivedParcels(){
         Session session=sessionFactory.getCurrentSession();
         return ((Number)(session.createQuery("select count(*) from entity.Parcel where status=:status")
                 .setParameter("status","Received")
                 .getSingleResult())).intValue();
 
+    }
+
+    public void searchForLostParcelsAndMarkThemAsLost(){
+        Session session=sessionFactory.getCurrentSession();
+        session.createQuery("update entity.Parcel set status=:status where sendDate<:sendDate and status=:oldStatus")
+                .setParameter("status","Lost")
+                .setParameter("oldStatus","Sent")
+                .setParameter("sendDate", Date.valueOf(LocalDate.now().minusDays(50)))
+                .executeUpdate();
     }
 
 

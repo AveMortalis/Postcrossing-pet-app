@@ -4,7 +4,7 @@ import entity.QueueingRecipient;
 import entity.User;
 import java.util.List;
 
-public interface IQueueingRecipient {
+public interface IQueueingRecipientDao {
 
     public List<QueueingRecipient> getAll();
 

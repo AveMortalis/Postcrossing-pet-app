@@ -70,3 +70,10 @@ input[type=submit] {
     font-size:16px;
     line-height: 20px;
 }
+.regError{
+    margin-top: 5px;
+    margin-bottom: 25px;
+    min-height: 30px;
+    font-size: 18px;
+    background-color: lightcoral;
+}

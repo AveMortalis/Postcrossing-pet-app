@@ -2,7 +2,7 @@ package service;
 
 import dao.IParcelDao;
 import dao.IUserDao;
-import dao.IWaiters;
+import dao.IQueueingRecipientDao;
 import entity.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,7 +21,7 @@ class ParcelServiceTest {
     IParcelDao parcelDao;
 
     @Mock
-    IWaiters awaitListDao;
+    IQueueingRecipientDao awaitListDao;
 
     @Mock
     IUserDao userDao;
@@ -50,7 +49,7 @@ class ParcelServiceTest {
         randomUserAdress.setCountry(randomUserCountry);
         random.setAddress(randomUserAdress);
 
-        Mockito.when(awaitListDao.getFirstRecordFromAwaitList(any())).thenReturn(null);
+        Mockito.when(awaitListDao.getFirstRecipientFromFromQueueingRecipientsButNotCurrent(any())).thenReturn(null);
         Mockito.when(userDao.getRandomUserButNotCurrent(currentUser)).thenReturn(random);
 
         Parcel parcel=parcelService.addNewParcel(currentUser);
@@ -78,10 +77,10 @@ class ParcelServiceTest {
         userFromWaitListAdress.setCountry(userFromWaitListCountry);
         userFromWaitList.setAddress(userFromWaitListAdress);
 
-        AwaitList awaitList = new AwaitList();
-        awaitList.setUser(userFromWaitList);
+        QueueingRecipient queueingRecipient = new QueueingRecipient();
+        queueingRecipient.setUser(userFromWaitList);
 
-        Mockito.when(awaitListDao.getFirstRecordFromAwaitList(currentUser)).thenReturn(awaitList);
+        Mockito.when(awaitListDao.getFirstRecipientFromFromQueueingRecipientsButNotCurrent(currentUser)).thenReturn(queueingRecipient);
 
 
         Parcel parcel=parcelService.addNewParcel(currentUser);

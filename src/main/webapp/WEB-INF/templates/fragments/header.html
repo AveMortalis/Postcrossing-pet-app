@@ -36,16 +36,14 @@
 				<li class="nav-item">
 					<a class="button" href="parcelStats" >СТАТИСТИКА</a>
 				</li>
-				<th:li class="nav-item dropdown" th:switch="${session.auth}">
-					<a class="button" href="#" th:case="true" th:switch="${session.auth}">ПОСЫЛКИ</a>
-					<div class="dropdown-content" th:case="true">
-								<a href="parcelRegistration">Зарегистрировать посылку</a>
-								<a href="getRecipentInfo">Отправить посылку</a>
+				<th:li sec:authorize="hasRole('USER')" class="nav-item dropdown" >
+					<a class="button" href="#">ПОСЫЛКИ</a>
+					<div class="dropdown-content" >
+						<a href="parcelRegistration">Зарегистрировать посылку</a>
+						<a href="recipientDetails">Отправить посылку</a>
+						<a href="myParcelStats">Моя статистика</a>
 					</div>
 				</th:li>
-			    <li class="nav-item nav-last">
-			    	<a class="button" href="changeLanguage" >ИЗМЕНИТЬ ЯЗЫК</a>
-			    </li>
 			</ul>
 	</nav>
 </div>

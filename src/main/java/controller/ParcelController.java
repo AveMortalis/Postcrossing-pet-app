@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import security.SecurityUser;
 import service.IParcelService;
 import service.IUserService;
@@ -32,7 +33,7 @@ public class ParcelController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/getRecipentInfo",method = RequestMethod.GET)
+    @RequestMapping(value = "/recipientDetails",method = RequestMethod.GET)
     public String getParcelRecipient(@AuthenticationPrincipal SecurityUser securityUser, Model model){
 
         User mailer = userService.getUserByLogin(securityUser.getUsername());
@@ -49,21 +50,44 @@ public class ParcelController {
     }
 
     @RequestMapping(value = "/parcelRegistration",method = RequestMethod.POST)
-    public String registerParcel(@AuthenticationPrincipal SecurityUser securityUser, HttpServletRequest request){
+    public String registerParcel(@AuthenticationPrincipal SecurityUser securityUser, HttpServletRequest request, RedirectAttributes redirectAttributes){
+
 
         User recipient = userService.getUserByLogin(securityUser.getUsername());
-        parcelService.registerParcelByRegcode(request.getParameter("regcode").trim(),recipient);
+        boolean isRegistred=parcelService.registerParcelByRegcode(request.getParameter("regcode").trim(),recipient);
+        if(!isRegistred){
+            redirectAttributes.addAttribute("error","Invalid regcode");
+            return "redirect:/parcelRegistration";
+        }
         return "redirect:/userDetails";
 
     }
 
     @RequestMapping(value = "/parcelRegistration",method = RequestMethod.GET)
-    public String getRecipient(Model model){
+    public String getParcelRegistrationPage(Model model){
 
         String regcode="";
         model.addAttribute("regcode",regcode);
         return "parcelRegistration";
 
+    }
+
+    @RequestMapping(value = "/parcelStats", method = RequestMethod.GET)
+    public String getOverallParcelStats(Model model,@AuthenticationPrincipal SecurityUser securityUser){
+
+        model.addAttribute("parcels",parcelService.getAll());
+        return "parcelStats";
+    }
+
+    @RequestMapping(value = "/myParcelStats", method = RequestMethod.GET)
+    public String getUserParcelStats(Model model,@AuthenticationPrincipal SecurityUser securityUser){
+
+        if(securityUser!=null){
+            User user = userService.getUserByLogin(securityUser.getUsername());
+            model.addAttribute("userSendedParcels",parcelService.getAllSentByUser(user));
+            model.addAttribute("userRecivedParcels",parcelService.getAllReceivedByUser(user));
+        }
+        return "myParcelStats";
     }
 
 }

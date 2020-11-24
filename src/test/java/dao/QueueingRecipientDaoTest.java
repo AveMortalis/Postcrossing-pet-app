@@ -1,7 +1,7 @@
 package dao;
 
 import config.TestConfig;
-import entity.AwaitList;
+import entity.QueueingRecipient;
 import entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,15 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
 @Transactional
-class AwaitListDaoTest {
+class QueueingRecipientDaoTest {
 
     @Autowired
-    IWaiters waitersDao;
+    IQueueingRecipientDao waitersDao;
 
     @Test
     @Sql({"classpath:data.sql"})
@@ -38,9 +36,9 @@ class AwaitListDaoTest {
         User currentUser = new User();
         currentUser.setId(6);
 
-        AwaitList waiter = waitersDao.getFirstRecordFromAwaitList(currentUser);
+        QueueingRecipient waiter = waitersDao.getFirstRecipientFromFromQueueingRecipientsButNotCurrent(currentUser);
 
-        Assertions.assertEquals(21,waiter.getId());
+        Assertions.assertEquals(21,waiter.getPosition());
 
     }
 
@@ -48,15 +46,15 @@ class AwaitListDaoTest {
     @Sql({"classpath:data.sql"})
     void delete() {
 
-        List<AwaitList> waiters = waitersDao.getAll();
+        List<QueueingRecipient> waiters = waitersDao.getAll();
         int count = waiters.size();
-        AwaitList waiter =waiters.get(0);
+        QueueingRecipient waiter =waiters.get(0);
 
 
         waitersDao.delete(waiter);
 
         Assertions.assertEquals(count,waitersDao.getAll().size()+1);
-        Assertions.assertFalse(waitersDao.getAll().stream().anyMatch(x->x.getId()==waiter.getId()));
+        Assertions.assertFalse(waitersDao.getAll().stream().anyMatch(x->x.getPosition()==waiter.getPosition()));
     }
 
     @Test
@@ -64,13 +62,13 @@ class AwaitListDaoTest {
     void add() {
 
         int count = waitersDao.getAll().size();
-        AwaitList waiter = new AwaitList();
-        waiter.setId(100);
+        QueueingRecipient waiter = new QueueingRecipient();
+        waiter.setPosition(100);
 
         waitersDao.add(waiter);
 
         Assertions.assertEquals(count,waitersDao.getAll().size()-1);
-        Assertions.assertTrue(waitersDao.getAll().stream().anyMatch(x->x.getId()==waiter.getId()));
+        Assertions.assertTrue(waitersDao.getAll().stream().anyMatch(x->x.getPosition()==waiter.getPosition()));
     }
 
     @Test

@@ -2,30 +2,30 @@ package entity;
 
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "awaitlist")
-public class AwaitList implements Serializable {
+@Table(name = "queueingrecipients")
+public class QueueingRecipient implements Serializable {
+
     @Id
     @Generated(GenerationTime.INSERT)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id",insertable = false)
-    private int id;
+    private int position;
 
     @OneToOne
     @JoinColumn(name = "user_id_fk")
     private User user;
 
-    public int getId() {
-        return id;
+    public int getPosition() {
+        return position;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public User getUser() {
@@ -41,15 +41,15 @@ public class AwaitList implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AwaitList awaitList = (AwaitList) o;
+        QueueingRecipient queueingRecipient = (QueueingRecipient) o;
 
-        if (id != awaitList.id) return false;
-        return user != null ? user.equals(awaitList.user) : awaitList.user == null;
+        if (position != queueingRecipient.position) return false;
+        return user != null ? user.equals(queueingRecipient.user) : queueingRecipient.user == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = position;
         result = 31 * result + (user != null ? user.hashCode() : 0);
         return result;
     }

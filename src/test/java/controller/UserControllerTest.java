@@ -8,15 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ViewResolver;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring5.ISpringTemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -26,13 +21,9 @@ import service.IUserService;
 import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -98,7 +89,7 @@ class UserControllerTest {
         lastSent.add(new Parcel());
 
         when(userService.getUserByLogin(any())).thenReturn(user);
-        when(userService.availableToSendByUser(user)).thenReturn(1);
+        when(userService.getCountOfParcelsAvailableToSendByUser(user)).thenReturn(1);
         when(parcelService.getLastSentUserParcels(5,user)).thenReturn(lastSent);
         this.mockMvc.perform(get("/userDetails"))
                 .andExpect(status().isOk())

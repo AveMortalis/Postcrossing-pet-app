@@ -2,7 +2,7 @@ package service;
 
 import dao.IParcelDao;
 import dao.IUserDao;
-import dao.IWaiters;
+import dao.IQueueingRecipientDao;
 import entity.Parcel;
 import entity.User;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +21,7 @@ class UserServiceTest {
 
     @Mock private IUserDao userDao;
 
-    @Mock private IWaiters awaitListDao;
+    @Mock private IQueueingRecipientDao awaitListDao;
 
     @Mock private IParcelDao parcelDao;
 
@@ -44,7 +44,7 @@ class UserServiceTest {
 
 
         User user=new User();
-        Mockito.doReturn(allRecieved).when(parcelDao).getAllSentUserParcelsHaveReceived(any(User.class));
+        Mockito.doReturn(allRecieved).when(parcelDao).getAllSentUserParcelsThatHaveBeenReceived(any(User.class));
         Mockito.doReturn(allTraveling).when(parcelDao).getAllTravelingUserParcels(any(User.class));
         IUserService userService=new UserService(userDao,awaitListDao,parcelDao);
         Assertions.assertTrue(userService.isSendLimitReached(user));
@@ -68,7 +68,7 @@ class UserServiceTest {
 
 
         User user=new User();
-        Mockito.doReturn(allRecieved).when(parcelDao).getAllSentUserParcelsHaveReceived(any(User.class));
+        Mockito.doReturn(allRecieved).when(parcelDao).getAllSentUserParcelsThatHaveBeenReceived(any(User.class));
         Mockito.doReturn(allTraveling).when(parcelDao).getAllTravelingUserParcels(any(User.class));
         IUserService userService=new UserService(userDao,awaitListDao,parcelDao);
         Assertions.assertFalse(userService.isSendLimitReached(user));

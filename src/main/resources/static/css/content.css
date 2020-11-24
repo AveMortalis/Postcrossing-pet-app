@@ -63,3 +63,10 @@ ul{
     list-style-type: none;
     padding: 0px;
 }
+.regError{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    min-height: 30px;
+    font-size: 18px;
+    background-color: lightcoral;
+}

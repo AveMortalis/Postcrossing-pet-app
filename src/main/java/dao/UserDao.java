@@ -23,35 +23,41 @@ public class UserDao implements IUserDao {
     }
 
     public List<User> getAll(){
+
         Session session=sessionFactory.getCurrentSession();
         Query query=session.createQuery("FROM entity.User");
         return query.list();
     }
 
     public User getUserById(int id){
+
         Session session=sessionFactory.getCurrentSession();
         return session.get(User.class,id);
     }
 
     public void deleteUser(User user){
+
         Session session=sessionFactory.getCurrentSession();
         session.delete(user);
     }
 
     public void addUser(User user){
+
         Session session=sessionFactory.getCurrentSession();
         session.save(user);
     }
 
     public User getUserByLogin(String login){
+
         Session session=sessionFactory.getCurrentSession();
-        User user= session.createQuery("FROM entity.User where login=:login",User.class).setParameter("login",login).getSingleResult();
+        User user= session.createQuery("FROM entity.User where login=:login",User.class).setParameter("login",login).uniqueResult();
         return user;
     }
 
     public User getRandomUserButNotCurrent(User currentUser){
+
+        //TODO find better solution
         Session session=sessionFactory.getCurrentSession();
-        //list().get(0);
         int minId = (Integer) session.createQuery("SELECT min(id) FROM entity.User").getSingleResult();
         int maxId = (Integer) session.createQuery("SELECT max(id) FROM entity.User").getSingleResult();
         User randomUser=null;
@@ -59,7 +65,7 @@ public class UserDao implements IUserDao {
         int randomId;
         do {
             randomId= random.nextInt(maxId - minId + 1) + minId;
-            randomUser = session.createQuery("FROM entity.User where id=:randomId", User.class).setParameter("randomId", randomId).getSingleResult();
+            randomUser = getUserById(randomId);
         }while (randomUser==null || currentUser.equals(randomUser));
 
         return randomUser;
@@ -70,23 +76,14 @@ public class UserDao implements IUserDao {
         session.update(user);
     }
 
-    public int getCountOfUsers(){
+    public int getTotalCountOfUsers(){
         Session session=sessionFactory.getCurrentSession();
         return ((Number)(session.createQuery("select count(*) from entity.User")).uniqueResult()).intValue();
     }
 
-    public int getCountOfCountries(){
+    public int getTotalCountOfCountries(){
         Session session=sessionFactory.getCurrentSession();
         return ((Number)(session.createQuery("select count(DISTINCT address.country) FROM entity.User")).uniqueResult()).intValue();
     }
 
-    public void searchForLostUserParcelsAndMarkThemAsLost(User user){
-        Session session=sessionFactory.getCurrentSession();
-        session.createQuery("update entity.Parcel set status=:status where mailer=:mailer and sendDate<:sendDate and status=:oldStatus")
-                .setParameter("status","Lost")
-                .setParameter("oldStatus","Sent")
-                .setParameter("mailer",user)
-                .setParameter("sendDate",Date.valueOf(LocalDate.now().minusDays(50)))
-                .executeUpdate();
-    }
 }

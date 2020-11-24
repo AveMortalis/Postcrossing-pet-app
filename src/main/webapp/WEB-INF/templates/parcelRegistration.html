@@ -10,6 +10,9 @@
 <div th:fragment="content" class="content">
     <div class="reg-content-wrapper">
         <div class="info">
+            <div th:if="${param.error!=null}" class="regError">
+                <a  >Вы ввели не верный регистрационный код</a>
+            </div>
             <span>Введите в поле регистрационный код, который указан на полученной вами посылке.</span><br>
             <span>Регистрационный код имеет вид ABxxxxxxxAB.</span>
         </div>

@@ -9,40 +9,6 @@
 </head>
 <body>
 <div th:fragment="content" class="content">
-    <span sec:authorize="hasRole('USER')" class="smalltitle">Отправленные вами:</span>
-    <table sec:authorize="hasRole('USER')">
-        <tr>
-            <th>Дата</th>
-            <th>Кому</th>
-            <th>Куда</th>
-            <th>Статус</th>
-        </tr>
-        <tr th:each="sended : ${userSendedParcels}">
-            <td th:text="${sended.sendDate}">1</td>
-            <td th:text="${sended.recipient.name}+' '+${sended.recipient.surname}">Recipient</td>
-            <td th:text="${sended.recipient.address.country.countryName}">Country</td>
-            <td th:text="${sended.status}">Status</td>
-        </tr>
-
-    </table>
-    <a sec:authorize="hasRole('USER')" class="right" href="">Показать все</a>
-
-    <br>
-    <span sec:authorize="hasRole('USER')" class="smalltitle">Принятые вами:</span>
-    <table sec:authorize="hasRole('USER')">
-        <tr>
-            <th>Дата</th>
-            <th>От кого</th>
-            <th>Откуда</th>
-            <th>Статус</th>
-        </tr>
-        <tr  th:each="recived : ${userRecivedParcels}">
-            <td th:text="${recived.sendDate}">1</td>
-            <td th:text="${recived.mailer.name}+' '+${recived.mailer.surname}">Mailer</td>
-            <td th:text="${recived.mailer.address.country.countryName}">Country</td>
-            <td th:text="${recived.status}">Status</td>
-        </tr>
-    </table>
     <span class="smalltitle">Общая статистика:</span>
     <table>
         <tr>

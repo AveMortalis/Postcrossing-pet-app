@@ -20,15 +20,17 @@ public interface IParcelDao {
 
     public Parcel getParcelByRecipientAndRegcode(User recipient, String regcode);
 
-    public List<Parcel> getAllSentUserParcelsHaveReceived(User mailer);
+    public List<Parcel> getAllSentUserParcelsThatHaveBeenReceived(User mailer);
 
     public List<Parcel> getAllTravelingUserParcels(User mailer);
 
-    public List<Parcel> getAllSentUserParcels(User user);
+    public List<Parcel> getAllParcelsSentByUser(User user);
 
-    public List<Parcel> getAllReceivedParcelsByUser(User user);
+    public List<Parcel> getAllParcelsReceivedByUser(User user);
 
-    public int getCountOfParcels();
+    public int getTotalCountOfParcels();
 
-    public int getCountOfReceivedParcels();
+    public int getTotalCountOfReceivedParcels();
+
+    public void searchForLostParcelsAndMarkThemAsLost();
 }

@@ -22,8 +22,8 @@ CREATE TABLE users (
   FOREIGN KEY (address_id) REFERENCES address (id)
 );
 
-DROP TABLE awaitlist IF EXISTS  CASCADE;
-CREATE TABLE awaitlist (
+DROP TABLE queueingrecipients IF EXISTS  CASCADE;
+CREATE TABLE queueingrecipients (
   id int NOT NULL IDENTITY,
   user_id_fk int DEFAULT NULL,
   PRIMARY KEY (id),

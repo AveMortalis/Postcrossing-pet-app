@@ -11,12 +11,12 @@ public class UserService implements IUserService {
 
     private IUserDao userDao;
 
-    private IWaiters awaitListDao;
+    private IQueueingRecipientDao awaitListDao;
 
     private IParcelDao parcelDao;
 
     @Autowired
-    public UserService(IUserDao userDao, IWaiters awaitListDao,IParcelDao parcelDao) {
+    public UserService(IUserDao userDao, IQueueingRecipientDao awaitListDao, IParcelDao parcelDao) {
         this.userDao = userDao;
         this.awaitListDao = awaitListDao;
         this.parcelDao=parcelDao;
@@ -44,12 +44,12 @@ public class UserService implements IUserService {
 
     @Transactional
     public int getCountOfUsers(){
-        return userDao.getCountOfUsers();
+        return userDao.getTotalCountOfUsers();
     }
 
     @Transactional
     public int getCountOfCountries(){
-        return userDao.getCountOfCountries();
+        return userDao.getTotalCountOfCountries();
     }
 
     public User getRandomUserButNotCurrent(User currentUser){
@@ -59,14 +59,14 @@ public class UserService implements IUserService {
     @Transactional
     public boolean isSendLimitReached(User user){
 
-        return availableToSendByUser(user)==0;
+        return getCountOfParcelsAvailableToSendByUser(user)==0;
 
     }
 
     @Transactional
-    public int availableToSendByUser(User user){
+    public int getCountOfParcelsAvailableToSendByUser(User user){
 
-        int countOfSendedParcelsHaveReceived = parcelDao.getAllSentUserParcelsHaveReceived(user).size();
+        int countOfSendedParcelsHaveReceived = parcelDao.getAllSentUserParcelsThatHaveBeenReceived(user).size();
 
         int countOfTravelingParcels = parcelDao.getAllTravelingUserParcels(user).size();
 
@@ -82,12 +82,6 @@ public class UserService implements IUserService {
         }else {
             return 0;
         }
-    }
-
-
-    @Transactional
-    public void searchForLostUserParcels(User user){
-        userDao.searchForLostUserParcelsAndMarkThemAsLost(user);
     }
 
 }

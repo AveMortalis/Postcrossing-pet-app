@@ -5,6 +5,10 @@ import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.Table;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -13,29 +17,40 @@ public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name= "id",insertable=false)
-
     private int id;
 
     @Column(name= "login")
+    @NotNull
+    @Size(min=2,max=15,message = "Логин должен быть длиннее 2 и короче 15 символов")
     private String login;
 
     @Column(name="password")
+    @NotNull
+    @Size(min = 5,max = 100,message="Пароль должен быть длиннее 5 и короче 25 символов")
     private String password;
 
     @Column(name="email")
+    @NotNull
+    @Email(message = "Invalid email")
     private String email;
 
     @Column(name="name")
+    @NotNull
+    @Size(min = 5,max = 25,message="Имя должено быть длиннее 5 и короче 25 символов")
     private String name;
 
     @Column(name="surname")
+    @NotNull
+    @Size(min = 5,max = 25,message="Фамилия должена быть длиннее 5 и короче 25 символов")
     private String surname;
 
     @OneToOne( cascade = CascadeType.ALL )
     @JoinColumn(name = "address_id")
+    @Valid
     private Address address;
 
     @Column(name="details")
+    @Size(max = 250,message="Описание должно быть не длиннее 250 символов")
     private String details;
 
     public int getId() {

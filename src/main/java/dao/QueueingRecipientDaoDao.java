@@ -11,12 +11,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class QueueingRecipientDao implements IQueueingRecipient {
+public class QueueingRecipientDaoDao implements IQueueingRecipientDao {
 
     private SessionFactory sessionFactory;
 
     @Autowired
-    public QueueingRecipientDao(SessionFactory sessionFactory) {
+    public QueueingRecipientDaoDao(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
