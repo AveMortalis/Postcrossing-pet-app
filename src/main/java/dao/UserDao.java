@@ -58,8 +58,8 @@ public class UserDao implements IUserDao {
 
         //TODO find better solution
         Session session=sessionFactory.getCurrentSession();
-        int minId = (Integer) session.createQuery("SELECT min(id) FROM entity.User").getSingleResult();
-        int maxId = (Integer) session.createQuery("SELECT max(id) FROM entity.User").getSingleResult();
+        int minId = (Integer) session.createQuery("SELECT min(id) FROM entity.User").uniqueResult();
+        int maxId = (Integer) session.createQuery("SELECT max(id) FROM entity.User").uniqueResult();
         User randomUser=null;
         Random random = new Random();
         int randomId;

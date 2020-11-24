@@ -48,7 +48,7 @@ public class QueueingRecipientDaoDao implements IQueueingRecipientDao {
     }
 
 
-    public void addUserToAwaitList(User user){
+    public void addUserToQueueingRecipients(User user){
         Session session = sessionFactory.getCurrentSession();
         QueueingRecipient queueingRecipient =new QueueingRecipient();
         queueingRecipient.setUser(user);

@@ -12,9 +12,9 @@ public interface IUserService {
 
     public User getUserById(int id);
 
-    public int getCountOfUsers();
+    public int getTotalCountOfUsers();
 
-    public int getCountOfCountries();
+    public int getTotalCountOfCountries();
 
     public User getRandomUserButNotCurrent(User currentUser);
 

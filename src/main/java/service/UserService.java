@@ -11,14 +11,11 @@ public class UserService implements IUserService {
 
     private IUserDao userDao;
 
-    private IQueueingRecipientDao awaitListDao;
-
     private IParcelDao parcelDao;
 
     @Autowired
-    public UserService(IUserDao userDao, IQueueingRecipientDao awaitListDao, IParcelDao parcelDao) {
+    public UserService(IUserDao userDao, IParcelDao parcelDao) {
         this.userDao = userDao;
-        this.awaitListDao = awaitListDao;
         this.parcelDao=parcelDao;
     }
 
@@ -27,7 +24,7 @@ public class UserService implements IUserService {
         userDao.updateUser(user);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public User getUserByLogin(String login){
         return userDao.getUserByLogin(login);
     }
@@ -37,40 +34,35 @@ public class UserService implements IUserService {
         userDao.addUser(user);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public User getUserById(int id){
         return userDao.getUserById(id);
     }
 
-    @Transactional
-    public int getCountOfUsers(){
+    @Transactional(readOnly = true)
+    public int getTotalCountOfUsers(){
         return userDao.getTotalCountOfUsers();
     }
 
-    @Transactional
-    public int getCountOfCountries(){
+    @Transactional(readOnly = true)
+    public int getTotalCountOfCountries(){
         return userDao.getTotalCountOfCountries();
     }
 
+    @Transactional(readOnly = true)
     public User getRandomUserButNotCurrent(User currentUser){
         return userDao.getRandomUserButNotCurrent(currentUser);
     }
 
     @Transactional
-    public boolean isSendLimitReached(User user){
+    public boolean isSendLimitReached(User user){ return getCountOfParcelsAvailableToSendByUser(user)==0;}
 
-        return getCountOfParcelsAvailableToSendByUser(user)==0;
-
-    }
-
-    @Transactional
+    @Transactional(readOnly = true)
     public int getCountOfParcelsAvailableToSendByUser(User user){
 
-        int countOfSendedParcelsHaveReceived = parcelDao.getAllSentUserParcelsThatHaveBeenReceived(user).size();
-
+        int countOfSentParcelsThatHaveBeenReceived = parcelDao.getAllSentUserParcelsThatHaveBeenReceived(user).size();
         int countOfTravelingParcels = parcelDao.getAllTravelingUserParcels(user).size();
-
-        int sendLimit=5+countOfSendedParcelsHaveReceived/20;
+        int sendLimit=5+countOfSentParcelsThatHaveBeenReceived/20;
 
         if (sendLimit>50){
             sendLimit=50;

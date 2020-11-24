@@ -8,12 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import security.SecurityUser;
 import service.IParcelService;
 import service.IUserService;
@@ -95,7 +92,7 @@ public class UserController {
     @RequestMapping(value = "/userDetails",method = RequestMethod.GET)
     public String ShowUserDetails(Model model,@AuthenticationPrincipal SecurityUser securityUser) {
         User user=userService.getUserByLogin(securityUser.getUsername());
-        List<Parcel> last5=parcelService.getLastSentUserParcels(5,user);
+        List<Parcel> last5=parcelService.getLastParcelsSentByUser(5,user);
         model.addAttribute("last5sent",last5);
         model.addAttribute("availableToSend",userService.getCountOfParcelsAvailableToSendByUser(user));
         return "userDetails";

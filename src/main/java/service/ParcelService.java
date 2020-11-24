@@ -42,7 +42,7 @@ public class ParcelService implements IParcelService {
             parcel.setStatus("Received");
             LocalDate receiveDate= LocalDate.now();
             parcel.setReceiveDate(Date.valueOf(receiveDate));
-            queueingRecipientDao.addUserToAwaitList(parcel.getMailer());
+            queueingRecipientDao.addUserToQueueingRecipients(parcel.getMailer());
             return true;
         }
         return false;
@@ -73,12 +73,12 @@ public class ParcelService implements IParcelService {
     }
 
     @Transactional(readOnly = true)
-    public List<Parcel> getAllSentByUser(User user){
+    public List<Parcel> getAllParcelsSentByUser(User user){
         return parcelDao.getAllParcelsSentByUser(user);
     }
 
     @Transactional(readOnly = true)
-    public List<Parcel> getAllReceivedByUser(User user){
+    public List<Parcel> getAllParcelsReceivedByUser(User user){
         return parcelDao.getAllParcelsReceivedByUser(user);
     }
 
@@ -98,9 +98,9 @@ public class ParcelService implements IParcelService {
     }
 
     @Transactional(readOnly = true)
-    public List<Parcel> getLastSentUserParcels(final int COUNT_OF_PARCELS_TO_DISPLAY, User user){
+    public List<Parcel> getLastParcelsSentByUser(final int COUNT_OF_PARCELS_TO_DISPLAY, User user){
 
-        List<Parcel> parcels= getAllSentByUser(user);
+        List<Parcel> parcels= getAllParcelsSentByUser(user);
         if(parcels!=null) {
             if (parcels.size() > COUNT_OF_PARCELS_TO_DISPLAY) {
                 parcels = parcels.subList(parcels.size() - COUNT_OF_PARCELS_TO_DISPLAY, parcels.size());

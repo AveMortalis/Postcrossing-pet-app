@@ -14,5 +14,5 @@ public interface IQueueingRecipientDao {
 
     public void add(QueueingRecipient queueingRecipient);
 
-    public void addUserToAwaitList(User user);
+    public void addUserToQueueingRecipients(User user);
 }

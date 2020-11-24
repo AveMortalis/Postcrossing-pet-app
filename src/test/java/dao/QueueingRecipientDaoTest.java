@@ -79,7 +79,7 @@ class QueueingRecipientDaoTest {
         User user = new User();
         user.setId(3);
 
-        waitersDao.addUserToAwaitList(user);
+        waitersDao.addUserToQueueingRecipients(user);
 
         Assertions.assertEquals(count,waitersDao.getAll().size()-1);
         Assertions.assertTrue(waitersDao.getAll().stream().anyMatch(x->x.getUser().getId()==user.getId()));

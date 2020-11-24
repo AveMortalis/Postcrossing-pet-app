@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import service.IParcelService;
 import service.IUserService;
 
-import javax.servlet.http.HttpSession;
-
 @Controller
 public class IndexController {
 
@@ -28,8 +26,8 @@ public class IndexController {
         model.addAttribute("parcels", parcelService.getLastParcels(12));
         model.addAttribute("countOfParcels", parcelService.getTotalCountOfParcels());
         model.addAttribute("countOfReceivedParcels", parcelService.getTotalCountOfReceivedParcels());
-        model.addAttribute("countOfCountries", userService.getCountOfCountries());
-        model.addAttribute("countOfUsers", userService.getCountOfUsers());
+        model.addAttribute("countOfCountries", userService.getTotalCountOfCountries());
+        model.addAttribute("countOfUsers", userService.getTotalCountOfUsers());
         return "index";
     }
 

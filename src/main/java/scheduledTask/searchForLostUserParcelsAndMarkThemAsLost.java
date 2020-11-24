@@ -16,7 +16,8 @@ public class searchForLostUserParcelsAndMarkThemAsLost {
         this.parcelService = parcelService;
     }
 
-    @Scheduled(initialDelay = 20000, fixedDelay =86400000)//
+    //86400000 ms=1 day
+    @Scheduled(initialDelay = 20000, fixedDelay =86400000)
     public void searchForLostUserParcelsAndMarkThemAsLost(){
         parcelService.searchForLostParcelsAndMarkThemAsLost();
     }

@@ -3,22 +3,17 @@ package controller;
 import entity.Parcel;
 import entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import security.SecurityUser;
 import service.IParcelService;
 import service.IUserService;
-import service.ParcelService;
-import service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 public class ParcelController {
@@ -84,8 +79,8 @@ public class ParcelController {
 
         if(securityUser!=null){
             User user = userService.getUserByLogin(securityUser.getUsername());
-            model.addAttribute("userSendedParcels",parcelService.getAllSentByUser(user));
-            model.addAttribute("userRecivedParcels",parcelService.getAllReceivedByUser(user));
+            model.addAttribute("userSendedParcels",parcelService.getAllParcelsSentByUser(user));
+            model.addAttribute("userRecivedParcels",parcelService.getAllParcelsReceivedByUser(user));
         }
         return "myParcelStats";
     }

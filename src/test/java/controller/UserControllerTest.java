@@ -90,7 +90,7 @@ class UserControllerTest {
 
         when(userService.getUserByLogin(any())).thenReturn(user);
         when(userService.getCountOfParcelsAvailableToSendByUser(user)).thenReturn(1);
-        when(parcelService.getLastSentUserParcels(5,user)).thenReturn(lastSent);
+        when(parcelService.getLastParcelsSentByUser(5,user)).thenReturn(lastSent);
         this.mockMvc.perform(get("/userDetails"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("last5sent"))
