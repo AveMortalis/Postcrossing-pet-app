@@ -1,1 +1,1 @@
-# Postcrossing-pet-app
+# Postcrossing-pet-project
