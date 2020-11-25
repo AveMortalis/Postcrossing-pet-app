@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="fragments/layout::layout(~{::content},~{::title},~{::link})"  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User details</title>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/send.css}"/>
+</head>
+<body>
+<div th:fragment="content" class="content">
+    <div class="send">
+        <div class="parcel">
+            <span class="cntnt">Посылка <span th:text="${regcode}"></span> отправлена <span th:text="${sendDate}"></span></span>
+        </div>
+        <div class="regcode">
+            <span class="cntnt">Регистрационный код посылки:<br><b><span th:text="${regcode}"></span></b><br>Не забудь указать его на посылке.</span>
+        </div>
+        <div class="address">
+
+        <span class="cntnt">
+            <b>Данные получателя которые необходимо указать на посылке:</b>
+            <br>
+            <br><b>Имя и фамилия:</b> <span th:text="${recipient.name} +' '+ ${recipient.surname}"></span>
+            <br><b>Адресс:</b> <span th:text="${recipient.address.address}"></span>
+            <br><b>Город и страна:</b> <span th:text="${recipient.address.city}"></span>,<span th:text="${recipient.address.country.countryName}"></span>
+            <br><b>Почтовый индекс:</b> <span th:text="${recipient.address.postcode}"></span>
+        </span>
+        </div>
+        <div class="about">
+        <span class="cntnt"><b>Данные которые пользователь указал о себе:</b>
+            <br><span th:text="${recipient.details}"></span>
+        </span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+
+
+
+

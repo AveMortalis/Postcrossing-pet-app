@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="fragments/layout::layout(~{::content},~{::title},~{::link})"  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User details</title>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/content.css}"/>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/login.css}"/>
+</head>
+<body>
+<div th:fragment="content" class="content">
+    <div class="form-wrapper">
+        <form th:action=@{/auth} method="post">
+            <div>
+                <div th:if="${param.error!=null}" class="regError">
+                    <a>Вы ввели не верный логин и/или пароль</a>
+                </div>
+                <label for="username">Login</label>
+                <input type="text" name="username" id="username" value placeholder="Login">
+            </div>
+            <div >
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" value placeholder="Password">
+            </div>
+            <div>
+                <input  type="submit" name="Login" value="Login" class="button-login">
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

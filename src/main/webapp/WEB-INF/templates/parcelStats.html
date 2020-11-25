@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="fragments/layout::layout(~{::content},~{::title},~{::link})"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>User details</title>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/content.css}"/>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/stats.css}"/>
+</head>
+<body>
+<div th:fragment="content" class="content">
+    <span class="smalltitle">Общая статистика:</span>
+    <table>
+        <tr>
+            <th>Дата</th>
+            <th>От кого</th>
+            <th>Откуда</th>
+            <th>Статус</th>
+        </tr>
+
+        <tr th:each="parcel : ${parcels}">
+            <td th:text="${parcel.sendDate}">1</td>
+            <td th:text="${parcel.mailer.name}">Mailer</td>
+            <td th:text="${parcel.mailer.address.country.countryName}">Country</td>
+            <td th:text="${parcel.status}">Status</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
+
+

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <title>Welcome to postcrossing application</title>
+	<th:block th:fragment="styleForHeader" >
+		<link  rel="stylesheet" type="text/css" th:href="@{css/header.css}"/>
+		<link  href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+	</th:block>
+</head>
+<body>
+
+<div class="hdr" th:fragment="header">
+	<div class="logo">
+		POSTCROSSING
+	</div>
+	<th:ul class="account-menu">
+
+		<th:li class="acc-item login">
+			<a sec:authorize="hasRole('USER')" class="button" th:href="userDetails"><span sec:authentication="name"></span></a>
+			<a sec:authorize="hasRole('ANONYMOUS')" class="button" th:href="login" >Login</a>
+		</th:li>
+		<th:li class="acc-item logout">
+			<a sec:authorize="hasRole('USER')" class="button" href="logout">Logout</a>
+			<a sec:authorize="hasRole('ANONYMOUS')" class="button" href="registration">Регистрация</a>
+		</th:li>
+	</th:ul>
+	<nav>
+			<ul class="navbar">
+				<th:li class="nav-item nav-first">
+					<a class="button" th:href="@{/}" >НА ГЛАВНУЮ</a>
+				</th:li>
+			    <li class="nav-item">
+			    	<a class="button" href="faq" >ПОЛЕЗНАЯ ИНФОРМАЦИЯ</a>
+			    </li>
+				<li class="nav-item">
+					<a class="button" href="parcelStats" >СТАТИСТИКА</a>
+				</li>
+				<th:li sec:authorize="hasRole('USER')" class="nav-item dropdown" >
+					<a class="button" href="#">ПОСЫЛКИ</a>
+					<div class="dropdown-content" >
+						<a href="parcelRegistration">Зарегистрировать посылку</a>
+						<a href="recipientDetails">Отправить посылку</a>
+						<a href="myParcelStats">Моя статистика</a>
+					</div>
+				</th:li>
+			</ul>
+	</nav>
+</div>
+</body>
+</html>

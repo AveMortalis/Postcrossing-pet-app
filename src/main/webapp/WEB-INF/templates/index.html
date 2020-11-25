@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="fragments/layout::layout(~{::content},~{::title},~{::link})"  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Postcrossing,Главная</title>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/content.css}"/>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/stats.css}"/>
+</head>
+<body>
+<div th:fragment="content" class="content">
+    <div class="infoblocks">
+        <div class="left-info-block">
+            <h2>Что такое посткроссинг?</h2>
+            <br>Это некоммерческий проект который позволяет обмениваться реальными открытками людям проживающим в разных странах мира.
+        </div>
+        <div class="right-info-block">
+            <h2>С чего начать?</h2>
+            <br>1. Зарегистрируйся
+            <br>2. Нажми на кнопку "Отправить посылку" и получи адресс и идентификационный код который тебе необходимо указать на посылке
+            <br>3. Отправь посылку обычной почтой
+            <br>4. Через некоторое время получи посылку от другого пользователя и зарегистрируй её. Для этого нажми на кнопку "Регистрация посылки" и введи указанный на открытке регистрационный код
+            <br>5. Вернись к пункту 2 и повтори! ;-)
+        </div>
+    </div>
+    <div class="statsblock">
+        <div class="left-block">
+            <h2>Последние события:</h2>
+            <ul>
+                <li th:each="parcel:${parcels}" >
+                    <th:block th:switch="${parcel.status}">
+                        <span th:case="'Sent'" th:text="'Пользователь '+${parcel.mailer.login}+' отправил(а) посылку в '+${parcel.recipient.address.country.countryName}"></span>
+                        <span th:case="'Received'" th:text="'Пользователь '+${parcel.recipient.login}+' получил(а) посылку от '+${parcel.mailer.login}+ ' из '+${parcel.mailer.address.country.countryName}"></span>
+                        <span th:case="'Lost'" th:text="'Посылка пользователя '+${parcel.mailer.login}+' была помечена как утерянная'"></span>
+                    </th:block>
+                </li>
+            </ul>
+        </div>
+        <div class="right-block">
+            <h2>Общая статистика</h2>
+            <br>Открыток отправлено: <span th:text="${countOfParcels}"></span>
+            <br>Открыток получено: <span th:text="${countOfReceivedParcels}"></span>
+            <br>Пользователей участвует:<span th:text="${countOfUsers}"></span>
+            <br>Стран участвует: <span th:text="${countOfCountries}"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

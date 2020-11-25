@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="fragments/layout::layout(~{::content},~{::title},~{::link})"  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User details</title>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/content.css}"/>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/regParcel.css}"/>
+</head>
+<body>
+<div th:fragment="content" class="content">
+    <div class="reg-content-wrapper">
+        <div class="info">
+            <div th:if="${param.error!=null}" class="regError">
+                <a  >Вы ввели не верный регистрационный код</a>
+            </div>
+            <span>Введите в поле регистрационный код, который указан на полученной вами посылке.</span><br>
+            <span>Регистрационный код имеет вид ABxxxxxxxAB.</span>
+        </div>
+            <form th:action="parcelRegistration" method="POST">
+                <div class="regfield">
+                    <label for="regcode" class="labelLeft">Регистрационный код</label>
+                    <input type="text" name="regcode" id="regcode">
+                    <input  type="submit" name="reg" value="Зарегистрировать" >
+                </div>
+            </form>
+    </div>
+</div>
+</body>
+</html>
+
+
+
+

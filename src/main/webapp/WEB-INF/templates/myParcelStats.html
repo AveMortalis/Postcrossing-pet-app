@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="fragments/layout::layout(~{::content},~{::title},~{::link})"
+      xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>User details</title>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/content.css}"/>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/stats.css}"/>
+</head>
+<body>
+<div th:fragment="content" class="content">
+    <span sec:authorize="hasRole('USER')" class="smalltitle">Отправленные вами:</span>
+    <table sec:authorize="hasRole('USER')">
+        <tr>
+            <th>Дата</th>
+            <th>Кому</th>
+            <th>Куда</th>
+            <th>Статус</th>
+            <th>Регистрационный код</th>
+        </tr>
+        <tr th:each="sended : ${userSendedParcels}">
+            <td th:text="${sended.sendDate}">1</td>
+            <td th:text="${sended.recipient.name}+' '+${sended.recipient.surname}">Recipient</td>
+            <td th:text="${sended.recipient.address.country.countryName}">Country</td>
+            <td th:text="${sended.status}">Status</td>
+            <td th:text="${sended.registrationCode}">Reg.code</td>
+        </tr>
+
+    </table>
+    <br>
+    <span sec:authorize="hasRole('USER')" class="smalltitle">Принятые вами:</span>
+    <table sec:authorize="hasRole('USER')">
+        <tr>
+            <th>Дата</th>
+            <th>От кого</th>
+            <th>Откуда</th>
+            <th>Статус</th>
+        </tr>
+        <tr  th:each="recived : ${userRecivedParcels}">
+            <td th:text="${recived.sendDate}">1</td>
+            <td th:text="${recived.mailer.name}+' '+${recived.mailer.surname}">Mailer</td>
+            <td th:text="${recived.mailer.address.country.countryName}">Country</td>
+            <td th:text="${recived.status}">Status</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
+
+

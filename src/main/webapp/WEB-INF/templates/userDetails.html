@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="fragments/layout::layout(~{::content},~{::title},~{::link})"  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User details</title>
+    <link  rel="stylesheet" type="text/css" th:href="@{css/userDetails.css}"/>
+</head>
+<body>
+<div th:fragment="content" class="content">
+    <div class="account-details">
+        <div class="account-links">
+            <div class="account-details-item">
+                <div class="detail-icon"><img th:src="@{/img/send.png}"></div>
+                <div class="btn">
+                    <a href="recipientDetails">Отправить посылку</a>
+                </div>
+            </div>
+            <div class="account-details-item">
+                <div class="detail-icon"><img th:src="@{/img/reg.png}"></div>
+                <div class="btn">
+                    <a href="parcelRegistration">Зарегистрировать<br>посылку</a>
+                </div>
+            </div>
+            <div class="account-details-item">
+                <div class="detail-icon"><img th:src="@{/img/edit.png}"></div>
+                <div class="btn">
+                    <a href="update">Изменить личные<br>данные</a>
+                </div>
+            </div>
+            <div class="account-details-item">
+                <div class="detail-icon"><img th:src="@{/img/stats.png}"></div>
+                <div class="btn">
+                    <a href="myParcelStats">Моя статистика</a>
+                </div>
+            </div>
+        </div>
+        <div class="account-details-item sendStats">
+            Вы можете отправить <b><span th:text="${availableToSend}"></span></b> посылок<br><br>
+            Последние отправленные вами посылки:
+            <ul>
+                <th:block th:if="${last5sent}">
+                    <li th:each="last:${last5sent}" th:text="${last.registrationCode}+' Получатель:'+${last.recipient.login}+' Статус:'+${last.status}"></li>
+                </th:block>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
