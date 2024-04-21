@@ -26,7 +26,7 @@ public class User implements Serializable{
 
     @Column(name="password")
     @NotNull
-    @Size(min = 5,max = 100,message="Пароль должен быть длиннее 5 и короче 25 символов")
+    @Size(min = 3,max = 100,message="Пароль должен быть длиннее 3 и короче 25 символов")
     private String password;
 
     @Column(name="email")
@@ -36,12 +36,12 @@ public class User implements Serializable{
 
     @Column(name="name")
     @NotNull
-    @Size(min = 5,max = 25,message="Имя должено быть длиннее 5 и короче 25 символов")
+    @Size(min = 3,max = 25,message="Имя должено быть длиннее 3 и короче 25 символов")
     private String name;
 
     @Column(name="surname")
     @NotNull
-    @Size(min = 5,max = 25,message="Фамилия должена быть длиннее 5 и короче 25 символов")
+    @Size(min = 3,max = 25,message="Фамилия должена быть длиннее 3 и короче 25 символов")
     private String surname;
 
     @OneToOne( cascade = CascadeType.ALL )
