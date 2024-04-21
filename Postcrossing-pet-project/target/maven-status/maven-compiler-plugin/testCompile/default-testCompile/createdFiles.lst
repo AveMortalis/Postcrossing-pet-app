@@ -1,0 +1,6 @@
+service/ParcelServiceTest.class
+service/UserServiceTest.class
+dao/UserDaoTest.class
+dao/QueueingRecipientDaoTest.class
+controller/UserControllerTest.class
+dao/ParcelDaoTest.class

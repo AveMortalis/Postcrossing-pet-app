@@ -1,0 +1,16 @@
+services:
+  web:
+    depends_on:
+      db:
+        condition: service_healthy
+    build: Postcrossing-pet-project/
+    ports:
+      - "8080:8080"
+  db:
+    build: db/
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 5s
+      retries: 10
+    ports:
+      - "3306:3306"
