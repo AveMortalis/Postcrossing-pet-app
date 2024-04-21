@@ -1,0 +1,24 @@
+.button  {
+	display: inline-block;
+	width: 100px;
+	height: auto;
+	padding: 10px;
+	border: 2px solid black;
+	border-color: rgb(109, 179, 63);
+	border-radius: 5px;
+	background-color: white;
+	color:white;		
+	text-align: center;	
+	text-decoration: none;
+	color: black;
+	font-size:14px;
+	font-weight: 400;
+	font-family: "Montserrat",sans-serif;	
+}
+.button:hover {
+	border-color: black;	
+}
+.login {
+	background-color: rgb(109, 179, 63);;
+	color:white;
+}
