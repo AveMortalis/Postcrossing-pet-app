@@ -3,7 +3,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    build: Postcrossing-pet-project/
+    build: web/
     ports:
       - "8080:8080"
   db:
